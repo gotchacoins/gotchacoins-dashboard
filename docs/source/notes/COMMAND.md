@@ -9,3 +9,9 @@ make html
 ```bash
 open build/html/index.html
 ```
+
+```bash
+# https://github.com/astral-sh/uv
+
+uv sync
+```
