@@ -34,6 +34,11 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ["127.0.0.1", "10.0.0.2"]
 
+if env("USE_DOCKER", default="no") == "yes":
+    import socket
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS += [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
 
 # Application definition
 
@@ -119,7 +124,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko-kr"
+LANGUAGES = [
+    ("en", "English"),
+    ("ko", "Korean"),
+]
 
 TIME_ZONE = "UTC"
 
@@ -127,11 +136,20 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]  # 로컬에서만 사용
+if env("USE_S3", default="no") == "yes":
+    # STATIC_URL = f"https://{AWS_S3_ENDPOINT_URL}/static/"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+else:
+    STATIC_ROOT = BASE_DIR / "staticfiles"  # 사용은 안하지만 명시
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
