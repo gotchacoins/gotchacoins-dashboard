@@ -122,6 +122,9 @@
                       <span class="iconify lucide--mail text-base-content/80 size-5"></span>
                       {{form.email|add_class:"grow focus:outline-0"|attr:"placeholder:Email Address"}}
                   </label>
+                  {% for error in form.email.errors %}
+                    <p class="text-error text-sm mt-1">{{ error }}</p>
+                  {% endfor %}
               </fieldset>
               <fieldset class="fieldset">
                   <legend class="fieldset-legend">Password</legend>
@@ -137,6 +140,9 @@
                           <span class="iconify lucide--eye-off swap-on size-4"></span>
                       </label>
                   </label>
+                  {% for error in form.password1.errors %}
+                    <p class="text-error text-sm mt-1">{{ error }}</p>
+                  {% endfor %}
               </fieldset>
               <div>
                 <p class="text-xs mt-3 text-base-content/50 text-center">

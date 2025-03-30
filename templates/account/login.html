@@ -148,6 +148,9 @@
             ></span>
             {{form.login|add_class:"grow focus:outline-0"|attr:"placeholder:Email Address"}}
           </label>
+          {% for error in form.login.errors %}
+            <p class="text-error text-sm mt-1">{{ error }}</p>
+          {% endfor %}
         </fieldset>
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Password</legend>
@@ -174,6 +177,9 @@
               <span class="iconify lucide--eye-off swap-on size-4"></span>
             </label>
           </label>
+          {% for error in form.password.errors %}
+            <p class="text-error text-sm mt-1">{{ error }}</p>
+          {% endfor %}
         </fieldset>
         <div class="text-end">
           <a
