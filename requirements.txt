@@ -5,9 +5,14 @@ charset-normalizer==3.4.1
 cryptography==44.0.2
 django==5.1.7
 django-allauth==65.6.0
+django-components==0.134
 django-debug-toolbar==5.1.0
+django-extensions==3.2.3
+django-widget-tweaks==1.5.0
+djc-core-html-parser==1.0.2
 environs==14.1.1
 idna==3.10
+markupsafe==3.0.2
 marshmallow==3.26.1
 oauthlib==3.2.2
 packaging==24.2
@@ -18,3 +23,4 @@ requests==2.32.3
 requests-oauthlib==2.0.0
 sqlparse==0.5.3
 urllib3==2.3.0
+werkzeug==3.1.3
