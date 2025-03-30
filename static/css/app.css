@@ -8,6 +8,7 @@
   --text-lg: 18px;
   --text-xl: 20px;
   --color-red-400: oklch(0.704 0.191 22.216);
+  --color-red-500: oklch(0.637 0.237 25.331);
   --color-orange-400: oklch(0.75 0.183 55.934);
   --color-orange-500: oklch(0.705 0.213 47.604);
   --color-orange-600: oklch(0.646 0.222 41.116);
@@ -1947,6 +1948,9 @@ body {
       padding-inline: 6rem;
     }
   }
+  .my-2 {
+    margin-block: calc(var(--spacing) * 2);
+  }
   .label {
     display: inline-flex;
     align-items: center;
@@ -2594,6 +2598,11 @@ body {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+  .alert-error {
+    border-color: var(--color-error);
+    color: var(--color-error-content);
+    --alert-color: var(--color-error);
+  }
   .alert-info {
     border-color: var(--color-info);
     color: var(--color-info-content);
@@ -2990,6 +2999,9 @@ body {
   .text-purple-600 {
     color: var(--color-purple-600);
   }
+  .text-red-500 {
+    color: var(--color-red-500);
+  }
   .text-secondary {
     color: var(--color-secondary);
   }
@@ -3188,6 +3200,9 @@ body {
   }
   .lucide--log-in {
     --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4m-5-4l5-5l-5-5m5 5H3'/%3E%3C/svg%3E");
+  }
+  .lucide--log-out {
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14l5-5l-5-5m5 5H9'/%3E%3C/svg%3E");
   }
   .lucide--mail {
     --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3E%3Crect width='20' height='16' x='2' y='4' rx='2'/%3E%3Cpath d='m22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'/%3E%3C/g%3E%3C/svg%3E");

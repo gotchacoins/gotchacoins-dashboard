@@ -133,17 +133,18 @@
       </h3>
       <form class="mt-6 md:mt-10" method="post" action="{% url 'account_login' %}">
         {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-error text-sm my-2">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Email Address</legend>
           <label class="input w-full focus:outline-0">
             <span
               class="iconify lucide--mail text-base-content/80 size-5"
             ></span>
-            <!-- <input
-              class="grow focus:outline-0"
-              placeholder="Email Address"
-              type="email"
-            /> -->
             {{form.login|add_class:"grow focus:outline-0"|attr:"placeholder:Email Address"}}
           </label>
         </fieldset>
@@ -159,7 +160,7 @@
               id="password"
               type="password"
             /> -->
-            {{form.password|add_class:"grow focus:outline-0"|attr:"placeholder:Password"}}
+            {{form.password|add_class:"grow focus:outline-0"|attr:"placeholder:Password"|attr:"id:password"}}
             <label
               class="swap btn btn-xs btn-ghost btn-circle text-base-content/60"
             >

@@ -114,7 +114,14 @@
             </li>
           </ul>
         </div>
-        {% if user.is_authenticated %} 로그인 됨 {% else %}
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline btn-sm btn-square">
+            <span class="iconify lucide--log-out size-4"></span>
+          </button>
+        </form>
+        {% else %}
         <a
           target="_blank"
           class="btn btn-primary btn-sm btn-square"
