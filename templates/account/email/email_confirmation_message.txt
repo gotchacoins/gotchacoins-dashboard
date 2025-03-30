@@ -1,0 +1,14 @@
+{% load i18n %}
+{% blocktrans with site_name=current_site.name %}
+Hi! You're almost there 🎉  
+Someone just used this email to create an account on {{ site_name }}.
+{% endblocktrans %}
+
+{% blocktrans %}To complete your sign-up, please confirm your email by clicking the link below:{% endblocktrans %}
+
+{{ activate_url }}
+
+{% blocktrans with site_name=current_site.name %}
+If this wasn't you, feel free to ignore this email.  
+Thanks for choosing {{ site_name }} 🙌
+{% endblocktrans %}

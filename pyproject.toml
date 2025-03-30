@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "django>=5.1.7",
     "django-allauth[socialaccount]>=65.6.0",
+    "django-components>=0.134",
     "django-debug-toolbar>=5.1.0",
     "django-extensions>=3.2.3",
     "django-widget-tweaks>=1.5.0",
