@@ -1,2 +1,4 @@
 {% load i18n %}
-{% blocktrans with site_name=current_site.name %}Almost done! Verify your email to join {{ site_name }}{% endblocktrans %}
+{% blocktrans with site_name=current_site.name %}
+거의 다 왔어요! {{ site_name }}에 가입하려면 이메일 인증을 완료해 주세요 ✅
+{% endblocktrans %}

@@ -1,14 +1,17 @@
 {% load i18n %}
+
 {% blocktrans with site_name=current_site.name %}
-Hi! You're almost there 🎉  
-Someone just used this email to create an account on {{ site_name }}.
+안녕하세요! 👋  
+{{ site_name }} 가입이 거의 완료되었어요.
 {% endblocktrans %}
 
-{% blocktrans %}To complete your sign-up, please confirm your email by clicking the link below:{% endblocktrans %}
+{% blocktrans %}
+👇 아래 버튼을 눌러 이메일 인증을 완료해 주세요:
+{% endblocktrans %}
 
 {{ activate_url }}
 
 {% blocktrans with site_name=current_site.name %}
-If this wasn't you, feel free to ignore this email.  
-Thanks for choosing {{ site_name }} 🙌
+본인이 요청한 게 아니라면 걱정하지 마세요. 이 메일은 무시하셔도 됩니다.  
+Bitberet와 함께해 주셔서 감사합니다 🙌
 {% endblocktrans %}

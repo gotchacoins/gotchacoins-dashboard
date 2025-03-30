@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-30 20:55+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/_base.html:7
+msgid "비트베레"
+msgstr "Bitberet"
+
+#: templates/account/email/email_confirmation_message.txt:3
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "%(site_name)s 가입이 거의 완료되었어요.\n"
+msgid ""
+"\n"
+"안녕하세요! 👋  \n"
+"%(site_name)s 가입이 거의 완료되었어요.\n"
+msgstr ""
+"\n"
+"Hi there! 👋  \n"
+"You're almost signed up for %(site_name)s.\n"
+
+#: templates/account/email/email_confirmation_message.txt:8
+msgid ""
+"\n"
+"👇 아래 버튼을 눌러 이메일 인증을 완료해 주세요:\n"
+msgstr ""
+"\n"
+"👇 Click the button below to confirm your email:\n"
+
+#: templates/account/email/email_confirmation_message.txt:14
+msgid ""
+"\n"
+"본인이 요청한 게 아니라면 걱정하지 마세요. 이 메일은 무시하셔도 됩니다.  \n"
+"Bitberet와 함께해 주셔서 감사합니다 🙌\n"
+msgstr ""
+"\n"
+"If you didn’t request this, no worries — just ignore this email.  \n"
+"Thanks for joining Bitberet 🙌\n"
+
+#: templates/account/email/email_confirmation_subject.txt:2
+#, python-format
+msgid ""
+"\n"
+"거의 다 왔어요! %(site_name)s에 가입하려면 이메일 인증을 완료해 주세요 ✅\n"
+msgstr ""
+"\n"
+"You're almost there! Confirm your email to join %(site_name)s ✅\n"
