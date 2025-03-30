@@ -1,0 +1,40 @@
+{% load static %}
+<meta charset="UTF-8" />
+<meta name="author" content="Hyunwoo Kim" />
+<meta
+  name="keywords"
+  content="bitberet, crypto portfolio, crypto analytics, coin tracker, bitcoin dashboard, ethereum tracker, asset management, web3 investor, crypto visualization, real-time crypto stats"
+/>
+<meta
+  name="description"
+  content="Bitberet is a smart crypto portfolio tracker that helps you understand, analyze, and manage your digital assets — all in one elegant dashboard."
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link
+  rel="shortcut icon"
+  href="{% static 'images/favicon-dark.png' %}"
+  media="(prefers-color-scheme: dark)"
+/>
+<link
+  rel="shortcut icon"
+  href="{% static 'images/favicon-light.png' %}"
+  media="(prefers-color-scheme: light)"
+/>
+
+<link
+  rel="stylesheet"
+  href="{% if debug %}{% static '/css/app.css' %}{% else %}{% static '/css/app.min.css' %}{% endif %}"
+/>
+<script>
+  try {
+    const localStorageItem = localStorage.getItem("__BITBERET_CONFIG__");
+    if (localStorageItem) {
+      const theme = JSON.parse(localStorageItem).theme;
+      if (theme !== "system") {
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+</script>

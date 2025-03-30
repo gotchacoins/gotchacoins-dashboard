@@ -9,6 +9,7 @@ dependencies = [
     "django-allauth[socialaccount]>=65.6.0",
     "django-debug-toolbar>=5.1.0",
     "django-extensions>=3.2.3",
+    "django-widget-tweaks>=1.5.0",
     "environs>=14.1.1",
     "werkzeug>=3.1.3",
 ]

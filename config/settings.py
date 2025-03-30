@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from environs import Env
+from environs import Env  # https://pypi.org/project/environs/
 
 env = Env()
 env.read_env()
@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("DJANGO_SECRET_KEY")
+SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
     "django_extensions",
     "allauth",
     "allauth.account",
+    "widget_tweaks",
 ]
 
 LOCAL_APPS = [
@@ -138,6 +139,12 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+if env.str("USE_S3", default="no") == "yes":
+    # STATIC_URL = f"https://{AWS_S3_ENDPOINT_URL}/static/"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+else:
+    STATIC_ROOT = BASE_DIR / "staticfiles"  # 사용은 안하지만 명시
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -146,6 +153,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # django-debug-toolbar
 INTERNAL_IPS = ["127.0.0.1", "localhost"]
+if env.str("USE_DOCKER", default="no") == "yes":
+    import socket
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+
 if DEBUG:
     INSTALLED_APPS += ["debug_toolbar"]
     MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
@@ -168,3 +181,4 @@ ACCOUNT_SESSION_REMEMBER = True  # 세션 유지
 ACCOUNT_LOGIN_METHODS = {"email"}  # 로그인 방식 (username 없음)
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]  # 비밀번호 1회 입력, 이메일 필수
 ACCOUNT_UNIQUE_EMAIL = True  # 중복 이메일 방지
+ACCOUNT_EMAIL_VERIFICATION = "optional"
