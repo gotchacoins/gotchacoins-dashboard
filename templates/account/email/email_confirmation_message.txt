@@ -1,5 +1,4 @@
 {% load i18n %}
-
 {% blocktrans with site_name=current_site.name %}
 안녕하세요! 👋  
 {{ site_name }} 가입이 거의 완료되었어요.

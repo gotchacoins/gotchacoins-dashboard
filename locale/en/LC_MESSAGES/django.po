@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-30 20:55+0900\n"
+"POT-Creation-Date: 2025-03-30 21:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,8 @@ msgstr ""
 msgid "비트베레"
 msgstr "Bitberet"
 
-#: templates/account/email/email_confirmation_message.txt:3
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "%(site_name)s 가입이 거의 완료되었어요.\n"
+#: templates/account/email/email_confirmation_message.txt:2
+#, python-format
 msgid ""
 "\n"
 "안녕하세요! 👋  \n"
@@ -36,7 +33,7 @@ msgstr ""
 "Hi there! 👋  \n"
 "You're almost signed up for %(site_name)s.\n"
 
-#: templates/account/email/email_confirmation_message.txt:8
+#: templates/account/email/email_confirmation_message.txt:7
 msgid ""
 "\n"
 "👇 아래 버튼을 눌러 이메일 인증을 완료해 주세요:\n"
@@ -44,7 +41,7 @@ msgstr ""
 "\n"
 "👇 Click the button below to confirm your email:\n"
 
-#: templates/account/email/email_confirmation_message.txt:14
+#: templates/account/email/email_confirmation_message.txt:13
 msgid ""
 "\n"
 "본인이 요청한 게 아니라면 걱정하지 마세요. 이 메일은 무시하셔도 됩니다.  \n"
