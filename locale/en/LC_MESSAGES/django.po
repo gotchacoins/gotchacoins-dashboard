@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-30 21:00+0900\n"
+"POT-Creation-Date: 2025-04-01 03:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: templates/_base.html:7
-msgid "비트베레"
-msgstr "Bitberet"
+msgid "갓코"
+msgstr "GotchaCoins"
 
 #: templates/account/email/email_confirmation_message.txt:2
 #, python-format
@@ -45,7 +45,7 @@ msgstr ""
 msgid ""
 "\n"
 "본인이 요청한 게 아니라면 걱정하지 마세요. 이 메일은 무시하셔도 됩니다.  \n"
-"Bitberet와 함께해 주셔서 감사합니다 🙌\n"
+"%(site_name)s와 함께해 주셔서 감사합니다 🙌\n"
 msgstr ""
 "\n"
 "If you didn’t request this, no worries — just ignore this email.  \n"
