@@ -1,13 +1,15 @@
 {% load static %}
+
+{% load i18n %}
 <meta charset="UTF-8" />
 <meta name="author" content="Hyunwoo Kim" />
 <meta
   name="keywords"
-  content="bitberet, crypto portfolio, crypto analytics, coin tracker, bitcoin dashboard, ethereum tracker, asset management, web3 investor, crypto visualization, real-time crypto stats"
+  content="{% trans '갓코, gotchacoins, 코인 자산, 코인 포트폴리오, 암호화폐 대시보드, 비트코인 분석, 이더리움 추적, 웹3 자산관리, 가상자산 통합관리, 실시간 코인 시세, 업비트 연동, 빗썸 연동, 김프 확인, 디파이 자산, NFT 추적, 디지털 자산 분석' %}"
 />
 <meta
   name="description"
-  content="Bitberet is a smart crypto portfolio tracker that helps you understand, analyze, and manage your digital assets — all in one elegant dashboard."
+  content="{% trans '갓코(GotchaCoins)는 여러 거래소에 흩어진 암호화폐 자산을 한눈에 모아 분석할 수 있는 통합 포트폴리오 대시보드입니다.' %}"
 />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link
@@ -27,7 +29,7 @@
 />
 <script>
   try {
-    const localStorageItem = localStorage.getItem("__BITBERET_CONFIG__");
+    const localStorageItem = localStorage.getItem("__GOTCHACOINS_CONFIG__");
     if (localStorageItem) {
       const theme = JSON.parse(localStorageItem).theme;
       if (theme !== "system") {

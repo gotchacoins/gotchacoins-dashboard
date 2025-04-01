@@ -17,7 +17,7 @@ class LayoutCustomizer {
       sidebarTheme: "light",
       fullscreen: false,
     };
-    const configCache = localStorage.getItem("__NEXUS_CONFIG_v2.0__");
+    const configCache = localStorage.getItem("__GOTCHACOINS_CONFIG__");
     if (configCache) {
       this.config = JSON.parse(configCache);
     } else {
@@ -30,7 +30,7 @@ class LayoutCustomizer {
   }
 
   updateTheme = () => {
-    localStorage.setItem("__NEXUS_CONFIG_v2.0__", JSON.stringify(this.config));
+    localStorage.setItem("__GOTCHACOINS_CONFIG__", JSON.stringify(this.config));
 
     if (this.config.theme === "system") {
       this.html.removeAttribute("data-theme");
