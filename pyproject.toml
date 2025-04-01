@@ -1,7 +1,7 @@
 [project]
-name = "bitberet-dashboard"
+name = "gotchacoins-dashboard"
 version = "0.1.0"
-description = "Add your description here"
+description = "Got your coins? We do."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
