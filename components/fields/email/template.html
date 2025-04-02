@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+<fieldset class="fieldset">
+  <legend class="fieldset-legend">{{placeholder}}</legend>
+  <label class="input w-full focus:outline-0">
+    <span
+      class="iconify {{icon}} text-base-content/80 size-5"
+    ></span>
+    {{field|add_class:"grow focus:outline-0"|attr:"placeholder:Email Address"}}
+  </label>
+  {% for error in field.errors %}
+    <p class="text-error text-sm mt-1">{{ error }}</p>
+  {% endfor %}
+</fieldset>

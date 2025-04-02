@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load socialaccount %}
 {% load widget_tweaks %}
+{% load component_tags %}
 
 
 {% block title %} | 로그인{% endblock title %}
@@ -189,20 +190,6 @@
             Forgot Password?
           </a>
         </div>
-        <!-- <div class="mt-4 flex items-center gap-3 md:mt-6">
-          <input
-            class="checkbox checkbox-sm checkbox-primary"
-            aria-label="Checkbox example"
-            id="agreement"
-            type="checkbox"
-          />
-          <label for="agreement" class="text-sm">
-            I agree with
-            <span class="text-primary ms-1 cursor-pointer hover:underline">
-              terms and conditions
-            </span>
-          </label>
-        </div> -->
         <button
           class="btn btn-primary btn-wide mt-4 max-w-full gap-3 md:mt-6"
           type="submit"
