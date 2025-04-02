@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+
+{% block css %}
+{{ block.super }}
+<link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.3.0/apexcharts.min.css"
+    />
+{% endblock css %}
+
+{% block content %}
+<div class="size-full" id="layout-main">
+  <div class="flex">
+      {% include 'partials/sidebar.html' %}
+
+      <div class="flex h-screen min-w-0 grow flex-col overflow-auto">
+          {% include 'partials/topbar.html' %}
+
+          <!--  Start: Layout - Content -->
+
+          {% block dashboard_content %}{% endblock dashboard_content %}
+
+          <!--  End: Layout - Content -->
+      </div>
+  </div>
+
+  {% include 'partials/rightbar.html' %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.3.0/apexcharts.min.js"></script>
+{% endblock javascript %}

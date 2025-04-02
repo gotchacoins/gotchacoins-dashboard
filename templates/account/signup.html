@@ -1,12 +1,12 @@
-{% extends '_base.html' %} 
+{% extends 'layouts/page_base.html' %} 
 
 {% load static %} 
 {% load i18n %} 
 {% load widget_tweaks %}
 
-{% block title %}Register{% endblock title %}
+{% block title %} | 회원가입{% endblock title %}
 
-{% block content %}
+{% block page_content %}
 <div class="grid grid-cols-12 overflow-auto sm:h-screen">
   <div
     class="relative hidden bg-[#FFE9D1] lg:col-span-7 lg:block xl:col-span-8 2xl:col-span-9 dark:bg-[#14181c]"
@@ -205,8 +205,9 @@
     </div>
   </div>
 </div>
-{% endblock content %} 
+{% endblock page_content %} 
 
 {% block javascript %}
+{{ block.super }}
 <script src="{% static 'js/components/password-field.js' %}"></script>
 {% endblock javascript %}

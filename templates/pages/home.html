@@ -1,9 +1,9 @@
-{% extends '_base.html' %}
+{% extends 'layouts/page_base.html' %}
 {% load static %}
 
-{% block title %} | 홈{% endblock title %}
+{% block title %} | Got your coins? We do!{% endblock title %}
 
-{% block content %}
+{% block page_content %}
 <div class="bg-[var(--layout-background)]">
   <div
     id="landing-topbar"
@@ -34,7 +34,7 @@
                 class="menu bg-base-100 text-base-content min-h-full w-80 p-4"
               >
                 <li><p>Home</p></li>
-                <li><a href="./dashboards-ecommerce.html">Dashboard</a></li>
+                <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
                 <li><a href="/ui/components/accordion">Components</a></li>
               </ul>
             </div>
@@ -56,7 +56,7 @@
       <div class="gap-3">
         <ul class="menu menu-horizontal hidden gap-2 px-1 lg:inline-flex">
           <li><p>Home</p></li>
-          <li><a href="./dashboards-ecommerce.html">Dashboard</a></li>
+          <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
           <li><a href="./ui-components-accordion.html">Components</a></li>
         </ul>
       </div>
@@ -1492,7 +1492,7 @@
     </div>
   </div>
 </div>
-{% endblock content %}
+{% endblock page_content %}
 
 {% block javascript %}
 <script>
