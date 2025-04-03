@@ -1,3 +1,6 @@
+{% load static %}
+{% load i18n %}
+
 <div
     role="navigation"
     aria-label="Navbar"
@@ -251,19 +254,21 @@
             </div>
         </div>
         <div class="dropdown dropdown-bottom dropdown-end">
+            {% if user.is_authenticated %}
             <div tabindex="0" role="button" class="btn btn-ghost rounded-btn px-1.5">
                 <div class="flex items-center gap-2">
                     <div class="avatar">
                         <div class="bg-base-200 mask mask-squircle w-8">
-                            <img alt="Avatar" src="/images/avatars/1.png" />
+                            <img alt="Avatar" src="{{ user.avatar_url }}" />
                         </div>
                     </div>
                     <div class="-space-y-0.5 text-start">
-                        <p class="text-sm">Denish</p>
+                        <p class="text-sm">{{ user.username }}</p>
                         <p class="text-base-content/60 text-xs">Profile</p>
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div class="dropdown-content bg-base-100 rounded-box mt-4 w-44 shadow" tabindex="0">
                 <ul class="menu w-full p-2">
                     <li>
@@ -294,10 +299,13 @@
                         </div>
                     </li>
                     <li>
-                        <a class="text-error hover:bg-error/10" href="/auth/login">
-                            <span class="iconify lucide--log-out size-4"></span>
+                      <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="flex items-center text-error cursor-pointer">
+                            <span class="iconify lucide--log-out size-4 mr-2"></span>
                             <span>Logout</span>
-                        </a>
+                        </button>
+                      </form>
                     </li>
                 </ul>
             </div>

@@ -212,7 +212,25 @@ ACCOUNT_SESSION_REMEMBER = True  # 세션 유지
 ACCOUNT_LOGIN_METHODS = {"email"}  # 로그인 방식 (username 없음)
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]  # 비밀번호 1회 입력, 이메일 필수
 ACCOUNT_UNIQUE_EMAIL = True  # 중복 이메일 방지
+
 SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "APP": {
+            "client_id": env.str("GOOGLE_CLIENT_ID"),
+            "secret": env.str("GOOGLE_CLIENT_SECRET"),
+            "key": "",
+        },
+    }
+}
 
 # csrf
 CSRF_TRUSTED_ORIGINS = [
