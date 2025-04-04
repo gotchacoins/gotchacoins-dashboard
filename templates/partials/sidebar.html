@@ -376,21 +376,23 @@
             </li>
         </ul>
         <div class="dropdown dropdown-top dropdown-end w-full">
+            {% if user.is_authenticated %}
             <div
                 tabindex="0"
                 role="button"
                 class="bg-base-200 hover:bg-base-300 rounded-box mx-2 mt-0 flex cursor-pointer items-center gap-2.5 px-3 py-2 transition-all">
                 <div class="avatar">
                     <div class="bg-base-200 mask mask-squircle bg-base-200 w-8">
-                        <img alt="Avatar" src="/images/avatars/1.png" />
+                        <img alt="Avatar" src="{{ user.avatar_url }}" />
                     </div>
                 </div>
                 <div class="grow -space-y-0.5">
-                    <p class="text-sm font-medium">Denish N</p>
+                    <p class="text-sm font-medium">{{ user.username }}</p>
                     <p class="text-base-content/60 text-xs">@withden</p>
                 </div>
                 <span class="iconify lucide--chevrons-up-down text-base-content/60 size-4"></span>
             </div>
+            {% endif %}
             <ul
                 role="menu"
                 class="dropdown-content menu bg-base-100 rounded-box shadow-base-content/4 mb-1 w-48 p-1 shadow-[0px_-10px_40px_0px]"

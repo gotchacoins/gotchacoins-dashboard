@@ -1,7 +1,7 @@
 .PHONY: makemessages compilemessages
 
 makemessages:
-	python manage.py makemessages -l en
+	uv run python manage.py makemessages -l en
 
 compilemessages:
-	python manage.py compilemessages
+	uv run python manage.py compilemessages
