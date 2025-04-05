@@ -3,6 +3,7 @@
 {% load static %} 
 {% load i18n %} 
 {% load widget_tweaks %}
+{% load socialaccount %}
 
 {% block title %} | 회원가입{% endblock title %}
 
@@ -115,7 +116,7 @@
           </ul>
         </div>
       </div>
-      <h3 class="mt-8 text-center text-xl font-semibold md:mt-12 lg:mt-24">
+      <h3 class="mt-8 text-center text-xl font-semibold md:mt-12 lg:mt-20">
         Register
       </h3>
       <h3 class="text-base-content/70 mt-2 text-center text-sm">
@@ -147,6 +148,7 @@
           <p class="text-error text-sm mt-1">{{ error }}</p>
           {% endfor %}
         </fieldset>
+
         <fieldset class="fieldset">
           <legend class="fieldset-legend">Password</legend>
           <label class="input w-full focus:outline-0">
@@ -170,15 +172,34 @@
           <p class="text-error text-sm mt-1">{{ error }}</p>
           {% endfor %}
         </fieldset>
-        <div>
-          <p class="text-xs mt-3 text-base-content/50 text-center">
-            By signing up, you agree to our
-            <a href="/terms" class="text-primary underline">Terms of Service</a>
-            and
-            <a href="/privacy" class="text-primary underline">Privacy Policy</a
-            >.
-          </p>
+
+        <!-- 약관 동의 체크박스 -->
+        <!-- 이용약관 동의 -->
+        <div class="form-control mt-4">
+          <label class="cursor-pointer label justify-start gap-2">
+            {{ form.agree_terms|add_class:"checkbox checkbox-sm" }}
+            <span class="label-text text-sm">
+              (필수) <a href="/terms" target="_blank" class="underline text-primary">이용약관</a>에 동의합니다.
+            </span>
+          </label>
+          {% for error in form.agree_terms.errors %}
+            <p class="text-error text-sm mt-1">{{ error }}</p>
+          {% endfor %}
         </div>
+
+        <!-- 개인정보 수집 동의 -->
+        <div class="form-control mt-2">
+          <label class="cursor-pointer label justify-start gap-2">
+            {{ form.agree_privacy|add_class:"checkbox checkbox-sm" }}
+            <span class="label-text text-sm">
+              (필수) <a href="/privacy" target="_blank" class="underline text-primary">개인정보 처리방침</a>에 동의합니다.
+            </span>
+          </label>
+          {% for error in form.agree_privacy.errors %}
+            <p class="text-error text-sm mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+
         <button
           class="btn btn-primary btn-wide mt-4 max-w-full gap-3 md:mt-6"
           type="submit"
@@ -186,12 +207,12 @@
           <span class="iconify lucide--user-plus size-4"></span>
           Register
         </button>
-        <button
+        <a href="{% provider_login_url 'google' process='signup' %}"
           class="btn btn-ghost btn-wide border-base-300 mt-4 max-w-full gap-3"
         >
-          <img class="size-6" alt="" src="/images/brand-logo/google-mini.svg" />
+          <img class="size-6" alt="" src="{% static 'images/brand-logo/google-logo.svg' %}" />
           Register with Google
-        </button>
+        </a>
         <p class="text-base-content/80 mt-4 text-center text-sm md:mt-6">
           I have already to
           <a

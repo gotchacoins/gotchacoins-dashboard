@@ -1,0 +1,17 @@
+<form method="post">
+  {% csrf_token %}
+  {% if error %}
+    <p class="text-error">{{ error }}</p>
+  {% endif %}
+  <label>
+    <input type="checkbox" name="agree_terms" required>
+    <a href="{% url 'pages:terms' %}" target="_blank">이용약관</a>에 동의합니다.
+  </label>
+  <br>
+  <label>
+    <input type="checkbox" name="agree_privacy" required>
+    <a href="{% url 'pages:privacy' %}" target="_blank">개인정보 처리방침</a>에 동의합니다.
+  </label>
+  <br>
+  <button type="submit">가입 완료</button>
+</form>

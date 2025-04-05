@@ -7,3 +7,11 @@ class HomePageView(TemplateView):
 
 class AboutPageView(TemplateView):
     template_name = "pages/about.html"
+
+
+class PrivacyPageView(TemplateView):
+    template_name = "pages/privacy.html"
+
+
+class TermsPageView(TemplateView):
+    template_name = "pages/terms.html"

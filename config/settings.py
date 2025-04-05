@@ -214,8 +214,11 @@ ACCOUNT_LOGIN_METHODS = {"email"}  # 로그인 방식 (username 없음)
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]  # 비밀번호 1회 입력, 이메일 필수
 ACCOUNT_UNIQUE_EMAIL = True  # 중복 이메일 방지
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # 이메일 인증 옵션 (필수 아님)
+ACCOUNT_FORMS = {
+    "signup": "accounts.forms.SignupConsentForm",
+}
 
-SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_AUTO_SIGNUP = False  # 이용약관 동의 후 회원가입
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
