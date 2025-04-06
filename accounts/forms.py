@@ -7,6 +7,7 @@ from django import forms
 
 from .models import User, UserAgreement, AgreementType
 
+
 AGREEMENT_VERSION = getattr(settings, "AGREEMENT_VERSION", "1.0")
 
 

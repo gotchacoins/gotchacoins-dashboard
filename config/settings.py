@@ -61,6 +61,7 @@ LOCAL_APPS = [
     "accounts",
     "pages",
     "dashboard",
+    "common",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -165,8 +166,9 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+USE_S3 = env.bool("USE_S3", default=False)
 
-if env.str("USE_S3", default="no") == "yes":
+if USE_S3:
     AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME")
@@ -184,7 +186,7 @@ if env.str("USE_S3", default="no") == "yes":
 
     STORAGES = {
         "default": {
-            "BACKEND": "config.storage_backends.PublicMediaStorage",
+            "BACKEND": "common.storages.public.PublicMediaStorage",
         },
         "staticfiles": {
             "BACKEND": "storages.backends.s3boto3.S3StaticStorage",

@@ -1,12 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from config.storage_backends import PublicMediaStorage
+from common.utils.storage import get_public_storage
 
 
 class User(AbstractUser):
     avatar = models.ImageField(
-        upload_to="avatars/", storage=PublicMediaStorage(), blank=True, null=True
+        upload_to="avatars/", storage=get_public_storage(), blank=True, null=True
     )
 
     def __str__(self):
