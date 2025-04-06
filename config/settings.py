@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.naver",
     "widget_tweaks",
     "django_components",
+    "storages",
 ]
 
 LOCAL_APPS = [
@@ -165,13 +166,46 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 if env.str("USE_S3", default="no") == "yes":
-    # STATIC_URL = f"https://{AWS_S3_ENDPOINT_URL}/static/"
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = env.str("AWS_S3_REGION_NAME")
+
+    AWS_S3_CUSTOM_DOMAIN = (
+        f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+    )
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    AWS_DEFAULT_ACL = None  # 최신 방식: 버킷 정책 사용
+
+    AWS_STATIC_LOCATION = "static"
+    AWS_PUBLIC_MEDIA_LOCATION = "media/public"
+    AWS_PRIVATE_MEDIA_LOCATION = "media/private"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "config.storage_backends.PublicMediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+            "OPTIONS": {
+                "location": AWS_STATIC_LOCATION,
+                "default_acl": "public-read",
+                "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            },
+        },
+    }
+
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_PUBLIC_MEDIA_LOCATION}/"
+
 else:
-    STATIC_ROOT = BASE_DIR / "staticfiles"  # 사용은 안하지만 명시
+    STATIC_URL = "/static/"
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 
 # Default primary key field type
@@ -199,7 +233,7 @@ DEBUG_TOOLBAR_CONFIG = {
 AUTH_USER_MODEL = "accounts.User"
 
 # django-allauth
-LOGIN_REDIRECT_URL = "pages:home"
+LOGIN_REDIRECT_URL = "dashboard:index"  # 로그인 후 리다이렉트 URL
 ACCOUNT_LOGOUT_REDIRECT_URL = "pages:home"
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
@@ -256,3 +290,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env.str("EMAIL_HOST_USER")
+
+AGREEMENT_VERSION = "1.0"  # 이용약관 버전

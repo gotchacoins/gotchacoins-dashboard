@@ -200,6 +200,19 @@
           {% endfor %}
         </div>
 
+        <!-- 마케팅 수집 동의 -->
+        <div class="form-control mt-2">
+          <label class="cursor-pointer label justify-start gap-2">
+            {{ form.agree_marketing|add_class:"checkbox checkbox-sm" }}
+            <span class="label-text text-sm">
+              (선택) 이벤트 및 혜택 알림 수신에 동의합니다.
+            </span>
+          </label>
+          {% for error in form.agree_marketing.errors %}
+            <p class="text-error text-sm mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+
         <button
           class="btn btn-primary btn-wide mt-4 max-w-full gap-3 md:mt-6"
           type="submit"

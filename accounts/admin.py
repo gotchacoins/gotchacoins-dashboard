@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {"fields": ("username", "password")}),
         (
             "Personal info",
-            {"fields": ("first_name", "last_name", "email", "avatar_url")},
+            {"fields": ("first_name", "last_name", "email", "avatar")},
         ),
         (
             "Permissions",

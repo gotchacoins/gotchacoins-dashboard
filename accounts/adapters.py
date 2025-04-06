@@ -1,8 +1,7 @@
-# accounts/adapters.py
-
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.account.utils import user_email, perform_login
 from allauth.exceptions import ImmediateHttpResponse
+from allauth.account import app_settings
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 
@@ -30,5 +29,9 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             sociallogin.connect(request, existing_user)
 
         raise ImmediateHttpResponse(
-            perform_login(request, existing_user, email_verification="optional")
+            perform_login(
+                request,
+                existing_user,
+                email_verification=app_settings.EMAIL_VERIFICATION,
+            )
         )
