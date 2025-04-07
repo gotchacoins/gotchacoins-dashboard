@@ -11,20 +11,17 @@
 {% block content %}
 <div class="size-full" id="layout-main">
   <div class="flex">
-      {% include 'partials/sidebar.html' %}
+      {% include 'partials/_sidebar.html' %}
 
       <div class="flex h-screen min-w-0 grow flex-col overflow-auto">
-          {% include 'partials/topbar.html' %}
+          {% include 'partials/_topbar.html' %}
 
           <!--  Start: Layout - Content -->
-
           {% block dashboard_content %}{% endblock dashboard_content %}
-
           <!--  End: Layout - Content -->
       </div>
   </div>
-
-  {% include 'partials/rightbar.html' %}
+  {% include 'partials/_rightbar.html' %}
 </div>
 {% endblock %}
 

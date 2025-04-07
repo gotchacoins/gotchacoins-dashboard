@@ -8,7 +8,10 @@
 
 {% block dashboard_content %}
 <div id="layout-content">
-  <form method="post" enctype="multipart/form-data" class="min-sm:container">
+  <form 
+    method="post"
+    enctype="multipart/form-data" 
+    class="min-sm:container">
     {% csrf_token %}
       <div
           class="bg-primary/10 rounded-box relative w-full overflow-hidden p-6">

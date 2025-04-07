@@ -1,19 +1,19 @@
 {% load static %}
 {% load i18n %}
 {% load widget_tweaks %}
+{% load django_htmx %}
+
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" class="group/html">
   <head>
     <title>{% trans "갓코" %}{% block title %}{% endblock title %}</title>
-    {% include 'partials/head.html' %}
-    {% block css %}{% endblock css %}
-    <script src="https://unpkg.com/htmx.org@latest"></script>
+    {% htmx_script %}
+    {% include 'partials/_head.html' %}
+    {% block css %}{% endblock css %}    
   </head>
   <body>
-    <div id="main-content">
-      {% block content %}{% endblock content %}
-    </div>
+    {% block content %}{% endblock content %}
     {% block javascript %}{% endblock javascript %}
-    {% include 'partials/footer.html' %}
+    {% include 'partials/_footer.html' %}
   </body>
 </html>
