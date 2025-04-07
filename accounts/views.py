@@ -8,6 +8,7 @@ from django.views.generic.edit import FormView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.contrib import messages
 import requests
 from django.core.files.base import ContentFile
 
@@ -91,3 +92,9 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def form_valid(self, form):
+        # 프로필 수정 후 메시지 추가
+        response = super().form_valid(form)
+        messages.success(self.request, "Your profile has been updated successfully!")
+        return response

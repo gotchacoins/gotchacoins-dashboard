@@ -6,8 +6,10 @@
 
 {% block title %} | 프로필 설정{% endblock title %}
 
+
 {% block dashboard_content %}
 <div id="layout-content">
+    
   <form 
     method="post"
     enctype="multipart/form-data" 
@@ -64,7 +66,7 @@
                         class="avatar group relative size-24 min-w-24 overflow-hidden rounded-full"
                       >
                         <div class="bg-base-200 size-full relative">
-                          <img src="{{ user.avatar.url }}" alt="Avatar" />
+                          <img id="avatar-preview" src="{{ user.avatar.url }}" alt="Avatar" />
                         </div>
                         <div
                           class="absolute right-0 -bottom-8 left-0 h-6 w-full bg-black/60 text-center text-sm font-medium text-white opacity-0 backdrop-blur-xs transition-all group-hover:bottom-0 group-hover:opacity-100"
@@ -75,13 +77,7 @@
                     </label>
                   
                     <!-- input은 숨겨둔 채로, 위 라벨 클릭 시 연결됨 -->
-                    <input
-                      type="file"
-                      name="avatar"
-                      class="hidden"
-                      id="avatar-upload"
-                      accept="image/*"
-                    />
+                    {{ form.avatar }}
                       <!---->
                       <div
                           class="fieldset grid grow grid-cols-1 gap-5 lg:grid-cols-2">
@@ -308,10 +304,46 @@
         </button>
     </div>
   </form>
+  {% if messages %}
+      {% for message in messages %}
+      <div class="toast">
+        <div class="alert alert-success">
+            <span>{{ message }}</span>
+        </div>
+    </div>
+      {% endfor %}
+  {% endif %}
 </div>
 {% endblock dashboard_content %}
 
 {% block javascript %}
 {{ block.super }}
 <script src="{% static 'js/pages/dashboard/ecommerce.js' %}"></script>
+<script>
+  function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              document.getElementById('avatar-preview').src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+      }
+  }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const messages = document.querySelectorAll('.toast');
+    
+    messages.forEach(function (message) {
+      // 메시지 표시 후 3초 후 서서히 사라짐
+      setTimeout(function () {
+        message.classList.add('opacity-0'); // opacity를 0으로 변경하여 사라지게 함
+        setTimeout(function () {
+          message.remove(); // 0으로 변경 후 메시지를 DOM에서 삭제
+        }, 200); // 애니메이션 시간 (0.5초 후)
+      }, 3000); // 3초 후 메시지 서서히 사라짐
+    });
+});
+</script>
 {% endblock javascript %}

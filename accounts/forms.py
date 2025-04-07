@@ -125,6 +125,18 @@ class SocialSignupConsentForm(forms.Form):
 
 
 class ProfileEditForm(forms.ModelForm):
+
+    avatar = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                "class": "hidden",
+                "id": "avatar-upload",
+                "accept": "image/*",
+                "onchange": "previewImage(event)",
+            }
+        )
+    )
+
     class Meta:
         model = User
         fields = ["first_name", "avatar"]
