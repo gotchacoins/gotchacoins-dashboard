@@ -60,9 +60,11 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "accounts",
+    "common",
     "pages",
     "dashboard",
-    "common",
+    "exchanges",
+    "terminal",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
