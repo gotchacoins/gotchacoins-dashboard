@@ -23,11 +23,11 @@
                         name="sidebar-menu-parent-item" />
                     <div class="collapse-title">
                         <span class="iconify lucide--monitor-dot size-4"></span>
-                        <span class="grow">Dashboard</span>
+                        <span class="grow">거래소</span>
                         <span class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
                     </div>
                     <div class="collapse-content">
-                        <a class="sidebar-menu-item" href="#">
+                        <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'upbit' %}">
                           <img
                             class="size-5"
                             alt=""
@@ -35,7 +35,7 @@
                           />
                           <span class="grow">업비트</span>
                         </a>
-                        <a class="sidebar-menu-item" href="#">
+                        <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'bithumb' %}">
                           <img
                             class="size-5"
                             alt=""
@@ -43,7 +43,7 @@
                           />
                           <span class="grow">빗썸</span>
                         </a>
-                        <a class="sidebar-menu-item" href="#">
+                        <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'binance' %}">
                           <img
                             class="size-5"
                             alt=""
@@ -53,7 +53,7 @@
                         </a>
                     </div>
                 </div>
-                <p class="sidebar-menu-title">Apps</p>
+                <p class="sidebar-menu-title">기능</p>
                 <div class="group collapse">
                     <input
                         aria-label="Sidemenu item trigger"
@@ -62,7 +62,7 @@
                         name="sidebar-menu-parent-item" />
                     <div class="collapse-title">
                         <span class="iconify lucide--store size-4"></span>
-                        <span class="grow">Ecommerce</span>
+                        <span class="grow">대시보드</span>
                         <span class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
                     </div>
                     <div class="collapse-content">
@@ -87,7 +87,7 @@
                         name="sidebar-menu-parent-item" />
                     <div class="collapse-title">
                         <span class="iconify lucide--brain-circuit size-4"></span>
-                        <span class="grow">Gen AI</span>
+                        <span class="grow">포트폴리오</span>
                         <div class="inline-flex gap-2">
                             <div
                                 class="border-primary/20 bg-primary/10 text-primary rounded-box border px-1.5 text-[12px]">
@@ -105,11 +105,15 @@
                 </div>
                 <a class="sidebar-menu-item" href="./apps-file-manager.html">
                     <span class="iconify lucide--server size-4"></span>
-                    File Manager
+                    실시간 시세
+                </a>
+                <a class="sidebar-menu-item" href="./apps-file-manager.html">
+                  <span class="iconify lucide--server size-4"></span>
+                  트렌드 코인
                 </a>
                 <a class="sidebar-menu-item" href="./apps-chat.html">
                     <span class="iconify lucide--messages-square size-4"></span>
-                    Chat
+                    갓코 AI
                 </a>
                 <p class="sidebar-menu-title">Pages</p>
                 <a class="sidebar-menu-item" href="./landing.html">
@@ -299,56 +303,11 @@
                         </div>
                     </div>
                 </div>
-                <p class="sidebar-menu-title">Other</p>
-                <div class="group collapse">
-                    <input
-                        aria-label="Sidemenu item trigger"
-                        class="peer"
-                        type="checkbox"
-                        name="sidebar-menu-parent-item" />
-                    <div class="collapse-title">
-                        <span class="iconify lucide--align-center size-4"></span>
-                        <span class="grow">Menu Levels</span>
-                        <span class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
-                    </div>
-                    <div class="collapse-content">
-                        <a class="sidebar-menu-item" href="#">Level 1a</a>
-                        <div class="group collapse">
-                            <input
-                                aria-label="Sidemenu item trigger"
-                                class="peer"
-                                type="checkbox"
-                                name="sidebar-menu-parent-item" />
-                            <div class="collapse-title">
-                                <span class="grow">Level 1b</span>
-                                <span
-                                    class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
-                            </div>
-                            <div class="collapse-content">
-                                <a class="sidebar-menu-item" href="#">Level 2a</a>
-                                <div class="group collapse">
-                                    <input
-                                        aria-label="Sidemenu item trigger"
-                                        class="peer"
-                                        type="checkbox"
-                                        name="sidebar-menu-parent-item" />
-                                    <div class="collapse-title">
-                                        <span class="grow">Level 2b</span>
-                                        <span
-                                            class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
-                                    </div>
-                                    <div class="collapse-content">
-                                        <a class="sidebar-menu-item" href="#">Level 3a</a>
-                                        <a class="sidebar-menu-item" href="#">Level 3b</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p class="sidebar-menu-title">설정 및 관리</p>
+                
                 <a class="sidebar-menu-item" href="https://google.com" target="_blank">
                     <span class="iconify lucide--external-link size-4"></span>
-                    External Links
+                    API 키 관리
                 </a>
                 <a class="sidebar-menu-item" href="#">
                     <span class="iconify lucide--award size-4"></span>
@@ -375,7 +334,7 @@
             <li>
                 <a href="./pages-settings.html" class="flex items-center gap-2">
                     <span class="iconify lucide--settings-2 size-4"></span>
-                    Settings
+                    설정
                     <div
                         class="border-primary/20 bg-primary/5 text-primary rounded-box ms-auto border px-1 text-[11px]">
                         New
@@ -385,7 +344,7 @@
             <li>
                 <a href="./pages-get-help.html" class="flex items-center gap-2">
                     <span class="iconify lucide--circle-help size-4"></span>
-                    Get Help
+                    도움말
                     <div
                         class="border-primary/20 bg-primary/5 text-primary rounded-box ms-auto border px-1 text-[11px]">
                         New

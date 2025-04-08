@@ -1,0 +1,16 @@
+<h1>{{ exchange_id|upper }} 포트폴리오</h1>
+
+{% if error_message %}
+  <p>{{ error_message }}</p>
+{% else %}
+  <table>
+    <tr><th>자산</th><th>보유량</th><th>매수 평균가</th></tr>
+    {% for item in holdings %}
+      <tr>
+        <td>{{ item.currency }}</td>
+        <td>{{ item.balance }}</td>
+        <td>{{ item.avg_buy_price }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}

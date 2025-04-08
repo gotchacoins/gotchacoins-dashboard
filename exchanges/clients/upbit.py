@@ -1,40 +1,92 @@
-# exchanges/clients/upbit.py
-
-import uuid
 import jwt
+import uuid
+import hashlib
 import httpx
+from urllib.parse import urlencode
 
-UPBIT_API_URL = "https://api.upbit.com"
 
+class UpbitClient:
 
-def get_upbit_balances(access_key: str, secret_key: str) -> list:
-    """
-    업비트 API 키로 사용자 잔고 조회
-    Returns:
-        list: [{ currency, balance, avg_buy_price, ... }]
-    """
-    try:
+    BASE_URL = "https://api.upbit.com"
+
+    def __init__(self, access_key: str, secret_key: str):
+        self.access_key = access_key
+        self.secret_key = secret_key
+
+    def _generate_headers(self, query: dict = None) -> dict:
         payload = {
-            "access_key": access_key,
+            "access_key": self.access_key,
             "nonce": str(uuid.uuid4()),
         }
 
-        jwt_token = jwt.encode(payload, secret_key, algorithm="HS256")
-        headers = {
-            "Authorization": f"Bearer {jwt_token}",
-        }
+        # 쿼리 파라미터가 있는 경우 query_hash 추가
+        if query:
+            query_string = urlencode(query)
+            query_hash = hashlib.sha512(query_string.encode()).hexdigest()
+            payload["query_hash"] = query_hash
+            payload["query_hash_alg"] = "SHA512"
 
-        with httpx.Client() as client:
-            response = client.get(
-                f"{UPBIT_API_URL}/v1/accounts", headers=headers, timeout=10
-            )
+        jwt_token = jwt.encode(payload, self.secret_key, algorithm="HS256")
+        return {"Authorization": f"Bearer {jwt_token}"}
 
-        if response.status_code == 200:
+    def _request(self, method: str, path: str, params: dict = None) -> dict:
+        url = f"{self.BASE_URL}{path}"
+        headers = self._generate_headers(params)
+
+        try:
+            with httpx.Client() as client:
+                response = client.request(
+                    method, url, headers=headers, params=params, timeout=10
+                )
+
+            response.raise_for_status()
             return response.json()
-        else:
-            print(f"[Upbit] 오류 응답: {response.status_code}, {response.text}")
+        except httpx.HTTPStatusError as e:
+            return {
+                "error": True,
+                "status": e.response.status_code,
+                "message": f"[Upbit] 상태 오류: {e.response.text}",
+            }
+
+        except httpx.RequestError as e:
+            return {"error": True, "message": f"[Upbit] 요청 실패: {str(e)}"}
+
+        except Exception as e:
+            return {"error": True, "message": f"[Upbit] 알 수 없는 예외: {str(e)}"}
+
+    def get_holdings(self):
+        """
+        보유 중인 전체 자산 목록을 조회합니다.
+
+        응답 필드:
+            - currency (str): 화폐 단위 (KRW, BTC 등)
+            - balance (str): 주문 가능 금액/수량
+            - locked (str): 주문 중인 금액/수량
+            - avg_buy_price (str): 매수 평균가
+            - avg_buy_price_modified (bool): 매수 평균가 수정 여부
+            - unit_currency (str): 평단가 기준 화폐 (예: KRW)
+        """
+
+        return self._request("GET", "/v1/accounts")
+
+    def get_markets(self):
+        """
+        업비트에서 거래 가능한 종목 목록
+        """
+        return self._request("GET", "/v1/market/all")
+
+    def get_price(self, markets: list[str]):
+        """
+        지정한 마켓의 현재 시세를 조회합니다.
+
+        Args:
+            markets (list[str]): 마켓 코드 리스트 (예: ["KRW-BTC", "KRW-ETH"])
+
+        Returns:
+            list[dict]: 각 마켓의 현재 시세 정보
+        """
+        if not markets:
             return []
 
-    except Exception as e:
-        print(f"[Upbit] 예외 발생: {e}")
-        return []
+        joined = ",".join(markets)
+        return self._request("GET", "/v1/ticker", params={"markets": joined})
