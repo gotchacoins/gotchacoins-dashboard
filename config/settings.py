@@ -63,7 +63,6 @@ LOCAL_APPS = [
     "common",
     "pages",
     "dashboard",
-    "exchanges",
     "terminal",
 ]
 
