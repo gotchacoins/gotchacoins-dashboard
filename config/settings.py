@@ -63,7 +63,6 @@ LOCAL_APPS = [
     "common",
     "pages",
     "dashboard",
-    "terminal",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
