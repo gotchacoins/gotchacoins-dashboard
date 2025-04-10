@@ -11,7 +11,7 @@ def delete_migrations(base_path: str = ".") -> None:
 
         if os.path.isdir(migrations_path):
             for filename in os.listdir(migrations_path):
-                if "_initial.py" in filename:
+                if filename.endswith(".py") and filename != "__init__.py":
                     file_path = os.path.join(migrations_path, filename)
                     os.remove(file_path)
                     print(f"Deleted: {file_path}")

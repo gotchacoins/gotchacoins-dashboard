@@ -304,15 +304,7 @@
         </button>
     </div>
   </form>
-  {% if messages %}
-      {% for message in messages %}
-      <div class="toast">
-        <div class="alert alert-success">
-            <span>{{ message }}</span>
-        </div>
-    </div>
-      {% endfor %}
-  {% endif %}
+  
 </div>
 {% endblock dashboard_content %}
 
@@ -330,20 +322,5 @@
           reader.readAsDataURL(file);
       }
   }
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const messages = document.querySelectorAll('.toast');
-    
-    messages.forEach(function (message) {
-      // 메시지 표시 후 3초 후 서서히 사라짐
-      setTimeout(function () {
-        message.classList.add('opacity-0'); // opacity를 0으로 변경하여 사라지게 함
-        setTimeout(function () {
-          message.remove(); // 0으로 변경 후 메시지를 DOM에서 삭제
-        }, 200); // 애니메이션 시간 (0.5초 후)
-      }, 3000); // 3초 후 메시지 서서히 사라짐
-    });
-});
 </script>
 {% endblock javascript %}

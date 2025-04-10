@@ -15,5 +15,18 @@
     {% block content %}{% endblock content %}
     {% block javascript %}{% endblock javascript %}
     {% include 'partials/_footer.html' %}
+
+    <!--토스트 메시지-->
+    {% if messages %}
+    {% for message in messages %}
+      {% if forloop.last %}
+          <div class="toast">
+            <div class="alert alert-success">
+              <span>{{ message }}</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </body>
 </html>
