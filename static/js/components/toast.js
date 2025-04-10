@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toasts = document.querySelectorAll(".toast");
 
   toasts.forEach((toast) => {
-    const removeDelay = 3000;
+    const removeDelay = 1000;
     const fadeDuration = 500;
 
     setTimeout(() => {
