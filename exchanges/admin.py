@@ -3,6 +3,7 @@ from .models import (
     Exchange,
     UserExchangeKey,
     Market,
+    Holding,
 )
 
 
@@ -19,4 +20,9 @@ class UserExchangeKeyAdmin(admin.ModelAdmin):
 
 @admin.register(Market)
 class MarketAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Holding)
+class HoldingAdmin(admin.ModelAdmin):
     pass

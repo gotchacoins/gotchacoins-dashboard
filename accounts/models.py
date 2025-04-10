@@ -28,10 +28,9 @@ class UserAgreement(models.Model):
 
     class Meta:
         unique_together = ("user", "agreement_type", "version")
+        indexes = [
+            models.Index(fields=["user", "agreement_type"]),
+        ]
 
         verbose_name = "사용자 약관 동의"
         verbose_name_plural = "사용자 약관 동의 내역"
-
-    def __str__(self):
-        status = "✅" if self.agreed else "❌"
-        return f"{self.user} | {self.agreement_type}:{status} v{self.version}"
