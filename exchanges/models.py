@@ -14,6 +14,10 @@ class Exchange(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "거래소"
+        verbose_name_plural = "거래소 목록"
+
 
 class Market(models.Model):
     exchange = models.ForeignKey(
@@ -37,6 +41,9 @@ class Market(models.Model):
             models.Index(fields=["market"]),
         ]
 
+        verbose_name = "거래쌍"
+        verbose_name_plural = "거래쌍 목록"
+
 
 class UserExchangeKey(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -51,8 +58,11 @@ class UserExchangeKey(models.Model):
     is_active = models.BooleanField(default=True)  # 사용 여부
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.user} - {self.exchange.id}"
+
     class Meta:
         unique_together = ("user", "exchange")
 
-    def __str__(self):
-        return f"{self.user} - {self.exchange.id}"
+        verbose_name = "거래소 API 키"
+        verbose_name_plural = "거래소 API 키 목록"
