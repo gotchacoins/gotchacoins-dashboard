@@ -27,30 +27,36 @@
                         <span class="iconify lucide--chevron-right arrow-icon size-3.5"></span>
                     </div>
                     <div class="collapse-content">
-                        <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'upbit' %}">
-                          <img
-                            class="size-5"
-                            alt=""
-                            src="{% static 'images/exchange-logo/upbit.svg' %}"
-                          />
-                          <span class="grow">업비트</span>
-                        </a>
-                        <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'bithumb' %}">
-                          <img
-                            class="size-5"
-                            alt=""
-                            src="{% static 'images/exchange-logo/bithumb.svg' %}"
-                          />
-                          <span class="grow">빗썸</span>
-                        </a>
-                        <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'binance' %}">
-                          <img
-                            class="size-5"
-                            alt=""
-                            src="{% static 'images/exchange-logo/binance.svg' %}"
-                          />
-                          <span class="grow">바이낸스</span>
-                        </a>
+                        {% if is_exchange_connected %}
+                          <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'upbit' %}">
+                            <img
+                              class="size-5"
+                              alt=""
+                              src="{% static 'images/exchange-logo/upbit.svg' %}"
+                            />
+                            <span class="grow">업비트</span>
+                          </a>
+                          <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'bithumb' %}">
+                            <img
+                              class="size-5"
+                              alt=""
+                              src="{% static 'images/exchange-logo/bithumb.svg' %}"
+                            />
+                            <span class="grow">빗썸</span>
+                          </a>
+                          <a class="sidebar-menu-item" href="{% url 'dashboard:portfolio' 'binance' %}">
+                            <img
+                              class="size-5"
+                              alt=""
+                              src="{% static 'images/exchange-logo/binance.svg' %}"
+                            />
+                            <span class="grow">바이낸스</span>
+                          </a>
+                        {% else %}
+                          <a class="sidebar-menu-item" href="#">
+                            <span class="grow">🚀 거래소 연동하러 가기</span>
+                          </a>
+                        {% endif %}
                     </div>
                 </div>
                 <p class="sidebar-menu-title">기능</p>
