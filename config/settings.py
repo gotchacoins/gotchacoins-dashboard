@@ -43,6 +43,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "django.contrib.humanize",
 ]
 
 THIRD_PARTY_APPS = [
@@ -281,3 +282,7 @@ EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env.str("EMAIL_HOST_USER")
 
 AGREEMENT_VERSION = "1.0"  # 이용약관 버전
+
+REDIS_URL = env.str("REDIS_URL", "redis://localhost:6379/1")
+# celery
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "redis://localhost:6379/0")

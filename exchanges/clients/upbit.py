@@ -3,17 +3,22 @@ import uuid
 import hashlib
 import httpx
 from urllib.parse import urlencode
+from .base import BaseExchangeClient
 
 
-class UpbitClient:
+class UpbitClient(BaseExchangeClient):
 
     BASE_URL = "https://api.upbit.com"
 
-    def __init__(self, access_key: str, secret_key: str):
+    def __init__(self, access_key: str = "", secret_key: str = ""):
         self.access_key = access_key
         self.secret_key = secret_key
 
-    def _generate_headers(self, query: dict = None) -> dict:
+    def _generate_headers(self, query: dict = None, use_auth: bool = True) -> dict:
+
+        if not use_auth:
+            return {}
+
         payload = {
             "access_key": self.access_key,
             "nonce": str(uuid.uuid4()),
@@ -29,9 +34,11 @@ class UpbitClient:
         jwt_token = jwt.encode(payload, self.secret_key, algorithm="HS256")
         return {"Authorization": f"Bearer {jwt_token}"}
 
-    def _request(self, method: str, path: str, params: dict = None) -> dict:
+    def _request(
+        self, method: str, path: str, params: dict = None, auth: bool = True
+    ) -> dict:
         url = f"{self.BASE_URL}{path}"
-        headers = self._generate_headers(params)
+        headers = self._generate_headers(params, use_auth=auth)
 
         try:
             with httpx.Client() as client:
@@ -73,7 +80,9 @@ class UpbitClient:
         """
         업비트에서 거래 가능한 종목 목록
         """
-        return self._request("GET", "/v1/market/all")
+        return self._request(
+            "GET", "/v1/market/all", params={"is_details": "true"}, auth=False
+        )
 
     def get_price(self, markets: list[str]):
         """
@@ -89,4 +98,31 @@ class UpbitClient:
             return []
 
         joined = ",".join(markets)
-        return self._request("GET", "/v1/ticker", params={"markets": joined})
+        return self._request(
+            "GET", "/v1/ticker", params={"markets": joined}, auth=False
+        )
+
+    def apply_current_prices(self, holdings: list[dict]):
+        markets = [
+            f"KRW-{item['currency']}" for item in holdings if item["currency"] != "KRW"
+        ]
+
+        prices_data = self.get_price(markets)
+
+        # "BTC": 80000000.0 형식으로 변환
+        prices = {
+            item["market"].split("-")[1]: item["trade_price"] for item in prices_data
+        }
+
+        for item in holdings:
+            currency = item["currency"]
+            if currency == "KRW":
+                item["current_price"] = 1.0
+                item["valuation"] = float(item["balance"])
+                continue
+
+            price = prices.get(currency, 0)
+            item["current_price"] = price
+            item["valuation"] = float(item["balance"]) * price
+
+        return holdings

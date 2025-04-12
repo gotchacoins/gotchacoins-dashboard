@@ -44,6 +44,9 @@ class Market(models.Model):
         verbose_name = "거래쌍"
         verbose_name_plural = "거래쌍 목록"
 
+    def __str__(self):
+        return f"[{self.exchange_id}] {self.korean_name} ({self.market})"
+
 
 class UserExchangeKey(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

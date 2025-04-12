@@ -1,0 +1,22 @@
+{% load math_filters %}
+{% load humanize %}
+
+{% for item in holdings %}
+<tr class="hover:bg-base-200/40 cursor-pointer *:text-nowrap">
+  <td class="px-10 font-medium">{{ item.name }} ({{ item.currency }})</td>
+  <td class="px-6">{{ item.balance }} {{ item.currency }}</td>
+  <td class="px-6">{{ item.avg_buy_price|intcomma }} {{ item.unit_currency }}</td>
+  <td class="px-6 text-sm font-medium">
+    {{ item.balance|mul:item.avg_buy_price|floatformat:0|intcomma }} {{ item.unit_currency }}
+  </td>
+  <td class="px-6">
+    <div class="badge badge-soft badge-success">
+      {{ item.valuation|floatformat:0|intcomma }} {{ item.unit_currency }}
+    </div>
+  </td>
+  <td class="px-6">평가손익</td>
+  <td class="px-6">수익률</td>
+</tr>
+{% empty %}
+<tr><td colspan="5" class="text-center text-base-content/60 py-4">보유 자산이 없습니다.</td></tr>
+{% endfor %}

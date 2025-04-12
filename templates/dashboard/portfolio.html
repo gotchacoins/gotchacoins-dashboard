@@ -1,16 +1,127 @@
-<h1>{{ exchange_id|upper }} 포트폴리오</h1>
+{% extends "layouts/dashboard_base.html" %} 
+{% load static %} 
+{% load i18n %} 
+{% load humanize %}
 
-{% if error_message %}
-  <p>{{ error_message }}</p>
-{% else %}
-  <table>
-    <tr><th>자산</th><th>보유량</th><th>매수 평균가</th></tr>
-    {% for item in holdings %}
-      <tr>
-        <td>{{ item.currency }}</td>
-        <td>{{ item.balance }}</td>
-        <td>{{ item.avg_buy_price }}</td>
-      </tr>
-    {% endfor %}
-  </table>
-{% endif %}
+{% block title %} | 대시보드{% endblock title %} 
+
+
+{% block dashboard_content %}
+<div id="layout-content">
+  <!--요약-->
+  <div
+    id="portfolio-summary"
+    hx-get="{% url 'dashboard:portfolio-summary-partial' exchange_id %}"
+    hx-trigger="every 3s"
+    hx-swap="innerHTML"
+  >
+    {% include "dashboard/partials/_portfolio_summary.html" %}
+  </div>
+  <!--요약 끝-->
+  <!-- 코인 목록-->
+  <div class="mt-6">
+    <div class="card bg-base-100 mt-5 shadow">
+      <div class="card-body p-0">
+        <div class="flex items-center justify-between px-5 pt-5">
+          <div class="inline-flex items-center gap-3">
+            <label class="input input-sm">
+              <span
+                class="iconify lucide--search text-base-content/80 size-3.5"
+              ></span>
+              <input
+                class="w-24 sm:w-36"
+                placeholder="Search along orders"
+                aria-label="Search orders"
+                type="search"
+              />
+            </label>
+            <div class="hidden sm:block">
+              <select class="select select-sm w-36" aria-label="Category">
+                <option value="" disabled="" selected="">
+                  Select Category
+                </option>
+                <option>Fashion</option>
+                <option>Daily Need</option>
+                <option>Cosmetic</option>
+                <option>Electronics</option>
+                <option>Food</option>
+              </select>
+            </div>
+          </div>
+          <a class="btn btn-sm btn-primary" href="./dashboards-ecommerce.html">
+            <span class="iconify lucide--monitor-dot size-4"></span>
+            <span class="hidden sm:inline">Dashboard</span>
+          </a>
+        </div>
+        <div class="mt-4 overflow-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="px-10">코인명</th>
+                <th class="px-6">보유량</th>
+                <th class="px-6">매수평균가</th>
+                <th class="px-6">매수금액</th>
+                <th class="px-6">평가금액</th>
+                <th class="px-6">평가손익</th>
+                <th class="px-6">수익률</th>
+              </tr>
+            </thead>
+            <tbody
+              id="portfolio-items"
+              hx-get="{% url 'dashboard:portfolio-coins-partial' exchange_id %}"
+              hx-trigger="every 3s"
+              hx-swap="innerHTML"
+            >
+              <!-- 보유한 코인들-->
+              {% include "dashboard/partials/_portfolio_coins.html" %}
+            </tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between p-6">
+          <div
+            class="text-base-content/80 hover:text-base-content flex gap-2 text-sm"
+          >
+            <span class="hidden sm:inline">Per page</span>
+            <select class="select select-xs w-18" aria-label="Per page">
+              <option value="10">10</option>
+              <option value="20" selected="">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+          <span class="text-base-content/80 hidden text-sm lg:inline">
+            Showing
+            <span class="text-base-content font-medium"> 1 to 20 </span>
+            of 457 items
+          </span>
+          <div class="inline-flex items-center gap-1">
+            <button
+              class="btn btn-circle sm:btn-sm btn-xs btn-ghost"
+              aria-label="Prev"
+            >
+              <span class="iconify lucide--chevron-left"></span>
+            </button>
+            <button class="btn btn-primary btn-circle sm:btn-sm btn-xs">
+              1
+            </button>
+            <button class="btn btn-ghost btn-circle sm:btn-sm btn-xs">2</button>
+            <button class="btn btn-ghost btn-circle sm:btn-sm btn-xs">3</button>
+            <button
+              class="btn btn-circle sm:btn-sm btn-xs btn-ghost"
+              aria-label="Next"
+            >
+              <span class="iconify lucide--chevron-right"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--코인 목록 끝-->
+</div>
+{% endblock dashboard_content %} 
+
+{% block javascript %} 
+{{ block.super }}
+<script src="{% static 'js/pages/dashboard/ecommerce.js' %}"></script>
+{% endblock javascript %}
