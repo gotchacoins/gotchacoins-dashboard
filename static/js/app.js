@@ -182,6 +182,23 @@ class LayoutCustomizer {
   afterInit = () => {
     this.initEventListener();
     this.initLeftmenu();
+
+    // 토스트 메시지
+    const toasts = document.querySelectorAll(".toast");
+
+    toasts.forEach((toast) => {
+      const removeDelay = 1000;
+      const fadeDuration = 500;
+
+      setTimeout(() => {
+        toast.style.transition = `opacity ${fadeDuration}ms ease`;
+        toast.style.opacity = "0";
+
+        setTimeout(() => {
+          toast.remove();
+        }, fadeDuration);
+      }, removeDelay);
+    });
   };
 
   init = () => {

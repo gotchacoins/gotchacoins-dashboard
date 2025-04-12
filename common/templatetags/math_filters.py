@@ -13,6 +13,14 @@ def mul(value, arg):
 
 
 @register.filter
+def add(value, arg):
+    try:
+        return float(value) + float(arg)
+    except (ValueError, TypeError):
+        return ""
+
+
+@register.filter
 def floor_int(value):
     try:
         return int(math.floor(float(value)))

@@ -14,9 +14,13 @@
       {{ item.valuation|floatformat:0|intcomma }} {{ item.unit_currency }}
     </div>
   </td>
-  <td class="px-6">평가손익</td>
-  <td class="px-6">수익률</td>
+  <td class="px-6">{{ item.profit|floor_int|intcomma }}</td>
+  <td class="px-6">
+    <span class="badge badge-soft {% if item.profit_rate > 0 %}badge-success{% elif item.profit_rate < 0 %}badge-error{% else %}badge-ghost{% endif %}">
+      {{ item.profit_rate|floatformat:2|intcomma }}%
+    </span>
+  </td>
 </tr>
 {% empty %}
-<tr><td colspan="5" class="text-center text-base-content/60 py-4">보유 자산이 없습니다.</td></tr>
+<tr><td colspan="7" class="text-center text-base-content/60 py-4">보유 자산이 없습니다.</td></tr>
 {% endfor %}

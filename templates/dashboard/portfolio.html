@@ -2,6 +2,7 @@
 {% load static %} 
 {% load i18n %} 
 {% load humanize %}
+{% load math_filters %}
 
 {% block title %} | 대시보드{% endblock title %} 
 
@@ -9,13 +10,25 @@
 {% block dashboard_content %}
 <div id="layout-content">
   <!--요약-->
-  <div
-    id="portfolio-summary"
-    hx-get="{% url 'dashboard:portfolio-summary-partial' exchange_id %}"
-    hx-trigger="every 3s"
-    hx-swap="innerHTML"
-  >
-    {% include "dashboard/partials/_portfolio_summary.html" %}
+
+  <div class="tabs mt-4">
+    <a id="summary-tab-button" class="tab tab-bordered tab-active" onclick="showTab('summary')">요약</a>
+    <a id="chart-tab-button" class="tab tab-bordered" onclick="showTab('chart')">차트</a>
+  </div>
+  <div id="summary-tab">
+    <div
+      id="portfolio-summary"
+      hx-get="{% url 'dashboard:portfolio-summary-partial' exchange_id %}"
+      hx-trigger="every 3s"
+      hx-swap="innerHTML"
+    >
+        {% include "dashboard/partials/_portfolio_summary.html" %}
+    </div>
+  </div>
+  <div id="chart-tab" class="hidden mt-6">
+    <div class="card bg-base-100 shadow p-6">
+      <p class="text-lg font-semibold">📊 여기는 차트 탭입니다 (임시 내용)</p>
+    </div>
   </div>
   <!--요약 끝-->
   <!-- 코인 목록-->
@@ -50,7 +63,7 @@
           </div>
           <a class="btn btn-sm btn-primary" href="./dashboards-ecommerce.html">
             <span class="iconify lucide--monitor-dot size-4"></span>
-            <span class="hidden sm:inline">Dashboard</span>
+            <span class="hidden sm:inline">차트 보기</span>
           </a>
         </div>
         <div class="mt-4 overflow-auto">
@@ -78,40 +91,42 @@
           </table>
         </div>
         <div class="flex items-center justify-between p-6">
-          <div
-            class="text-base-content/80 hover:text-base-content flex gap-2 text-sm"
-          >
-            <span class="hidden sm:inline">Per page</span>
-            <select class="select select-xs w-18" aria-label="Per page">
-              <option value="10">10</option>
-              <option value="20" selected="">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+          <div class="text-base-content/80 hover:text-base-content flex items-center gap-2 text-sm">
+
+            <span class="hidden sm:inline">페이지 당</span>
+            <select class="select select-xs w-18"
+                    aria-label="Per page"
+                    onchange="location.href='?page=1&limit=' + this.value">
+              <option value="10" {% if limit == 10 %}selected{% endif %}>10</option>
+              <option value="20" {% if limit == 20 %}selected{% endif %}>20</option>
+              <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
             </select>
+
           </div>
-          <span class="text-base-content/80 hidden text-sm lg:inline">
-            Showing
-            <span class="text-base-content font-medium"> 1 to 20 </span>
-            of 457 items
-          </span>
+          
           <div class="inline-flex items-center gap-1">
-            <button
-              class="btn btn-circle sm:btn-sm btn-xs btn-ghost"
-              aria-label="Prev"
-            >
-              <span class="iconify lucide--chevron-left"></span>
-            </button>
-            <button class="btn btn-primary btn-circle sm:btn-sm btn-xs">
-              1
-            </button>
-            <button class="btn btn-ghost btn-circle sm:btn-sm btn-xs">2</button>
-            <button class="btn btn-ghost btn-circle sm:btn-sm btn-xs">3</button>
-            <button
-              class="btn btn-circle sm:btn-sm btn-xs btn-ghost"
-              aria-label="Next"
-            >
-              <span class="iconify lucide--chevron-right"></span>
-            </button>
+            {% if page > 1 %}
+              <a href="?page={{ page|add:"-1" }}&limit={{ limit }}"
+                 class="btn btn-circle sm:btn-sm btn-xs btn-ghost"
+                 aria-label="Prev">
+                <span class="iconify lucide--chevron-left"></span>
+              </a>
+            {% endif %}
+          
+            {% for p in page_range %}
+              <a href="?page={{ p }}&limit={{ limit }}"
+                 class="btn btn-circle sm:btn-sm btn-xs {% if p == page %}btn-primary{% else %}btn-ghost{% endif %}">
+                {{ p }}
+              </a>
+            {% endfor %}
+          
+            {% if page < max_page %}
+              <a href="?page={{ page|add:"1" }}&limit={{ limit }}"
+                 class="btn btn-circle sm:btn-sm btn-xs btn-ghost"
+                 aria-label="Next">
+                <span class="iconify lucide--chevron-right"></span>
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -124,4 +139,39 @@
 {% block javascript %} 
 {{ block.super }}
 <script src="{% static 'js/pages/dashboard/ecommerce.js' %}"></script>
+<script>
+  window.showTab = function (tabName) {
+    document.getElementById("summary-tab").classList.add("hidden");
+    document.getElementById("chart-tab").classList.add("hidden");
+  
+    document.getElementById("summary-tab-button").classList.remove("tab-active");
+    document.getElementById("chart-tab-button").classList.remove("tab-active");
+  
+    document.getElementById(`${tabName}-tab`).classList.remove("hidden");
+    document.getElementById(`${tabName}-tab-button`).classList.add("tab-active");
+  
+    if (
+      tabName === "chart" &&
+      !document.getElementById("chart-tab").dataset.loaded
+    ) {
+      const options = {
+        chart: { type: "pie", height: 300 },
+        labels: JSON.parse('{{ pie_labels|default:"[]"|safe|escapejs }}'),
+        series: JSON.parse('{{ pie_series|default:"[]"|safe|escapejs }}'),
+        legend: { position: "bottom" },
+      };
+  
+      const chart = new ApexCharts(
+        document.querySelector("#portfolioPieChart"),
+        options
+      );
+  
+      chart.render();
+      document.getElementById("chart-tab").dataset.loaded = "true";
+    }
+  };
+  
+</script>
+
+
 {% endblock javascript %}

@@ -366,7 +366,11 @@
                 class="bg-base-200 hover:bg-base-300 rounded-box mx-2 mt-0 flex cursor-pointer items-center gap-2.5 px-3 py-2 transition-all">
                 <div class="avatar">
                     <div class="bg-base-200 mask mask-squircle bg-base-200 w-8">
+                      {% if user.avatar %}
                         <img alt="Avatar" src="{{ user.avatar.url }}" />
+                      {% else %}
+                        <img alt="Default Avatar" src="{% static 'images/profile/default_avatar.jpg' %}" />
+                      {% endif %}
                     </div>
                 </div>
                 <div class="grow -space-y-0.5">

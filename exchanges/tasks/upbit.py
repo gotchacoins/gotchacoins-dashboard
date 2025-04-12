@@ -1,16 +1,14 @@
-# exchanges/tasks.py
 from celery import shared_task
 from exchanges.clients.upbit import UpbitClient
 from exchanges.models import Exchange, Market
 
 
 @shared_task
-def sync_upbit_markets():
+def sync_upbit_markets_task():
     client = UpbitClient()  # 키 없이도 가능 (public endpoint)
     data = client.get_markets()
 
     if isinstance(data, dict) and data.get("error"):
-        # 로그 남기기
         print(f"[Upbit] 마켓 동기화 실패: {data['message']}")
         return
 

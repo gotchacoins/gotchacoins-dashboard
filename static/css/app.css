@@ -3098,6 +3098,12 @@ body {
     --tw-border-style: dashed;
     border-style: dashed;
   }
+  .badge-ghost {
+    border-color: var(--color-base-200);
+    background-color: var(--color-base-200);
+    color: var(--color-base-content);
+    background-image: none;
+  }
   .alert-error {
     border-color: var(--color-error);
     color: var(--color-error-content);
@@ -3558,6 +3564,9 @@ body {
   }
   .text-base-content\/40 {
     color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+  }
+  .text-base-content\/50 {
+    color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
   }
   .text-base-content\/60 {
     color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
@@ -4820,6 +4829,11 @@ body {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  .md\:grid-cols-3 {
+    @media (width >= 48rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
   .md\:grid-cols-5 {
     @media (width >= 48rem) {
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -4893,11 +4907,6 @@ body {
       display: none;
     }
   }
-  .lg\:inline {
-    @media (width >= 64rem) {
-      display: inline;
-    }
-  }
   .lg\:inline-flex {
     @media (width >= 64rem) {
       display: inline-flex;
@@ -4916,6 +4925,11 @@ body {
   .lg\:grid-cols-3 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .lg\:grid-cols-4 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
   .lg\:grid-cols-7 {
