@@ -11,7 +11,10 @@ def get_portfolio_coins_context(
         key = UserExchangeKey.objects.get(user=user, exchange__id=exchange_id)
         if exchange_id not in EXCHANGE_CLIENTS:
             return {
-                "error_message": f"[{exchange_id}] 지원되지 않는 거래소입니다.",
+                "error": {
+                    "code": "NOT_SUPPORTED_EXCHANGE",
+                    "message": f"[{exchange_id}] 지원되지 않는 거래소입니다.",
+                },
                 "holdings": [],
                 "page": page,
                 "limit": limit,
@@ -22,7 +25,10 @@ def get_portfolio_coins_context(
         holdings = client.get_holdings()
         if isinstance(holdings, dict) and holdings.get("error"):
             return {
-                "error_message": holdings["message"],
+                "error": {
+                    "code": "EXTERNAL_API_ERROR",
+                    "message": holdings["message"],
+                },
                 "holdings": [],
                 "page": page,
                 "limit": limit,
@@ -75,7 +81,10 @@ def get_portfolio_coins_context(
 
     except UserExchangeKey.DoesNotExist:
         return {
-            "error_message": f"{exchange_id.upper()} API 키가 등록되어 있지 않습니다.",
+            "error": {
+                "code": "KEY_MISSING",
+                "message": f"{exchange_id.upper()} API 키가 등록되어 있지 않습니다.",
+            },
             "holdings": [],
             "page": page,
             "limit": limit,
@@ -87,8 +96,16 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
     coins_context = get_portfolio_coins_context(user, exchange_id)
     holdings = coins_context.get("holdings", [])
 
-    if "error_message" in coins_context:
-        return coins_context
+    if "error" in coins_context:
+        return {
+            "krw_balance": 0,
+            "total_valuation": 0,
+            "total_buy_price": 0,
+            "profit": 0,
+            "profit_rate": 0,
+            "total_asset": 0,
+            "error": coins_context["error"],
+        }
 
     krw_balance = 0  # 이미 KRW 제거된 상태
     total_valuation = sum(item["valuation"] for item in holdings)
@@ -102,10 +119,10 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
     total_asset = krw_balance + total_valuation
 
     return {
-        "krw_balance": krw_balance,
-        "total_valuation": total_valuation,
-        "total_buy_price": total_buy_price,
-        "profit": profit,
-        "profit_rate": profit_rate,
-        "total_asset": total_asset,
+        "krw_balance": krw_balance,  # 보유 현금
+        "total_valuation": total_valuation,  # 총 평가금액
+        "total_buy_price": total_buy_price,  # 총 매수금액
+        "profit": profit,  # 총 수익
+        "profit_rate": profit_rate,  # 총 수익률
+        "total_asset": total_asset,  # 총 자산 (보유현금 + 총 평가금액)
     }

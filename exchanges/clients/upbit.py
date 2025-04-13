@@ -3,7 +3,9 @@ import uuid
 import hashlib
 import httpx
 from urllib.parse import urlencode
-from .base import BaseExchangeClient
+
+from exchanges.clients.base import BaseExchangeClient
+from exchanges.errors.upbit import UPBIT_ERROR_CODE_MESSAGES
 
 
 class UpbitClient(BaseExchangeClient):
@@ -45,21 +47,44 @@ class UpbitClient(BaseExchangeClient):
                 response = client.request(
                     method, url, headers=headers, params=params, timeout=10
                 )
-
             response.raise_for_status()
             return response.json()
+
         except httpx.HTTPStatusError as e:
-            return {
-                "error": True,
-                "status": e.response.status_code,
-                "message": f"[Upbit] 상태 오류: {e.response.text}",
-            }
+            try:
+                error_json = e.response.json()
+                upbit_error = error_json.get("error", {})
+                error_code = upbit_error.get("name", "UNKNOWN")
+                message = UPBIT_ERROR_CODE_MESSAGES.get(
+                    error_code, upbit_error.get("message", "알 수 없는 오류입니다.")
+                )
+
+                return {
+                    "error": True,
+                    "code": error_code,
+                    "message": message,
+                }
+
+            except Exception:
+                return {
+                    "error": True,
+                    "code": "UNKNOWN_ERROR",
+                    "message": f"응답 파싱 실패: {e.response.text}",
+                }
 
         except httpx.RequestError as e:
-            return {"error": True, "message": f"[Upbit] 요청 실패: {str(e)}"}
+            return {
+                "error": True,
+                "code": "REQUEST_ERROR",
+                "message": f"요청 실패: {str(e)}",
+            }
 
         except Exception as e:
-            return {"error": True, "message": f"[Upbit] 알 수 없는 예외: {str(e)}"}
+            return {
+                "error": True,
+                "code": "EXCEPTION",
+                "message": f"알 수 없는 예외: {str(e)}",
+            }
 
     def get_holdings(self):
         """
@@ -108,6 +133,10 @@ class UpbitClient(BaseExchangeClient):
         ]
 
         prices_data = self.get_price(markets)
+
+        if isinstance(prices_data, dict) and prices_data.get("error"):
+            # 에러일 경우 그대로 반환 (원본 holdings 유지)
+            return prices_data
 
         # "BTC": 80000000.0 형식으로 변환
         prices = {

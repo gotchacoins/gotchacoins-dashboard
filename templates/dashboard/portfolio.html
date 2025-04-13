@@ -10,7 +10,11 @@
 {% block dashboard_content %}
 <div id="layout-content">
   <!--요약-->
-
+  {% if error %}
+    <div class="alert alert-warning">
+      🚫 {{ error.message }}
+    </div>
+  {% endif %}
   <div class="tabs mt-4">
     <a id="summary-tab-button" class="tab tab-bordered tab-active" onclick="showTab('summary')">요약</a>
     <a id="chart-tab-button" class="tab tab-bordered" onclick="showTab('chart')">차트</a>
