@@ -1,10 +1,22 @@
 from abc import ABC, abstractmethod
+import httpx
 
 
 class BaseExchangeClient(ABC):
     def __init__(self, access_key: str, secret_key: str):
         self.access_key = access_key
         self.secret_key = secret_key
+
+    def _error(self, code: str, message: str) -> dict:
+        return {
+            "error": True,
+            "code": code,
+            "message": message,
+        }
+
+    @abstractmethod
+    def _handle_http_error(self, e: httpx.HTTPStatusError) -> dict:
+        pass
 
     @abstractmethod
     def get_holdings(self) -> list[dict]:

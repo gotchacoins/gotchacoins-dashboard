@@ -51,40 +51,28 @@ class UpbitClient(BaseExchangeClient):
             return response.json()
 
         except httpx.HTTPStatusError as e:
-            try:
-                error_json = e.response.json()
-                upbit_error = error_json.get("error", {})
-                error_code = upbit_error.get("name", "UNKNOWN")
-                message = UPBIT_ERROR_CODE_MESSAGES.get(
-                    error_code, upbit_error.get("message", "알 수 없는 오류입니다.")
-                )
-
-                return {
-                    "error": True,
-                    "code": error_code,
-                    "message": message,
-                }
-
-            except Exception:
-                return {
-                    "error": True,
-                    "code": "UNKNOWN_ERROR",
-                    "message": f"응답 파싱 실패: {e.response.text}",
-                }
+            return self._handle_http_error(e)
 
         except httpx.RequestError as e:
-            return {
-                "error": True,
-                "code": "REQUEST_ERROR",
-                "message": f"요청 실패: {str(e)}",
-            }
+            return self._error("REQUEST_ERROR", f"요청 실패: {str(e)}")
 
         except Exception as e:
-            return {
-                "error": True,
-                "code": "EXCEPTION",
-                "message": f"알 수 없는 예외: {str(e)}",
-            }
+            return self._error("EXCEPTION", f"알 수 없는 예외: {str(e)}")
+
+    def _handle_http_error(self, e: httpx.HTTPStatusError) -> dict:
+        try:
+            error_json = e.response.json()
+            upbit_error = (
+                error_json.get("error", {}) if isinstance(error_json, dict) else {}
+            )
+            error_code = upbit_error.get("name", "UNKNOWN")
+            message = UPBIT_ERROR_CODE_MESSAGES.get(
+                error_code, upbit_error.get("message", "알 수 없는 오류입니다.")
+            )
+            return self._error(error_code, message)
+
+        except Exception:
+            return self._error("UNKNOWN_ERROR", f"응답 파싱 실패: {e.response.text}")
 
     def get_holdings(self):
         """
