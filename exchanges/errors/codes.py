@@ -1,0 +1,8 @@
+from enum import Enum
+
+
+class ExchangeErrorCode(str, Enum):
+    EXTERNAL_API_ERROR = "EXTERNAL_API_ERROR"
+    KEY_MISSING = "KEY_MISSING"
+    NOT_SUPPORTED_EXCHANGE = "NOT_SUPPORTED_EXCHANGE"
+    UNKNOWN_ERROR = "UNKNOWN_ERROR"

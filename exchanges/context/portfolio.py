@@ -2,6 +2,7 @@ from django.utils.translation import get_language
 
 from exchanges.models import UserExchangeKey, Market
 from exchanges.clients import EXCHANGE_CLIENTS
+from exchanges.errors.codes import ExchangeErrorCode
 
 
 def get_portfolio_coins_context(
@@ -12,7 +13,7 @@ def get_portfolio_coins_context(
         if exchange_id not in EXCHANGE_CLIENTS:
             return {
                 "error": {
-                    "code": "NOT_SUPPORTED_EXCHANGE",
+                    "code": ExchangeErrorCode.NOT_SUPPORTED_EXCHANGE,
                     "message": f"[{exchange_id}] 지원되지 않는 거래소입니다.",
                 },
                 "holdings": [],
@@ -26,7 +27,7 @@ def get_portfolio_coins_context(
         if isinstance(holdings, dict) and holdings.get("error"):
             return {
                 "error": {
-                    "code": "EXTERNAL_API_ERROR",
+                    "code": ExchangeErrorCode.EXTERNAL_API_ERROR,
                     "message": holdings["message"],
                 },
                 "holdings": [],
@@ -82,7 +83,7 @@ def get_portfolio_coins_context(
     except UserExchangeKey.DoesNotExist:
         return {
             "error": {
-                "code": "KEY_MISSING",
+                "code": ExchangeErrorCode.KEY_MISSING,
                 "message": f"{exchange_id.upper()} API 키가 등록되어 있지 않습니다.",
             },
             "holdings": [],
