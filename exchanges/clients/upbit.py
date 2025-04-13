@@ -5,7 +5,7 @@ import httpx
 from urllib.parse import urlencode
 
 from exchanges.clients.base import BaseExchangeClient
-from exchanges.errors.upbit import UPBIT_ERROR_CODE_MESSAGES
+from exchanges.errors.messages import UPBIT_ERROR_CODE_MESSAGES
 
 
 class UpbitClient(BaseExchangeClient):

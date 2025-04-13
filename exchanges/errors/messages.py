@@ -1,4 +1,4 @@
-# https://docs.upbit.com/kr/docs/api-%EC%A3%BC%EC%9A%94-%EC%97%90%EB%9F%AC-%EC%BD%94%EB%93%9C-%EB%AA%A9%EB%A1%9D
+# 업비트:https://docs.upbit.com/kr/docs/api-%EC%A3%BC%EC%9A%94-%EC%97%90%EB%9F%AC-%EC%BD%94%EB%93%9C-%EB%AA%A9%EB%A1%9D
 
 UPBIT_ERROR_CODE_MESSAGES = {
     "invalid_query_payload": "요청이 정상적으로 처리되지 않았어요. 다시 시도하거나 키를 다시 등록해주세요.",
