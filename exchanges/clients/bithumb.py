@@ -42,6 +42,14 @@ class BithumbClient(BaseExchangeClient):
     def get_holdings(self):
         return self._request("GET", "/v1/accounts")
 
+    def get_markets(self):
+        """
+        업비트에서 거래 가능한 종목 목록
+        """
+        return self._request(
+            "GET", "/v1/market/all", params={"isDetails": "true"}, auth=False
+        )
+
     def get_price(self, markets: list[str]):
         """
         지정한 마켓의 현재 시세를 조회합니다.
