@@ -52,6 +52,6 @@ class BaseExchangeClient(ABC):
         pass
 
     @abstractmethod
-    def apply_current_prices(self, holdings: list[dict]) -> list[dict]:
+    def enrich_holdings(self, holdings: list[dict]) -> list[dict]:
         """보유 자산에 현재가 추가"""
         pass

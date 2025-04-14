@@ -38,7 +38,7 @@ def get_portfolio_coins_context(
                 "total": 0,
             }
 
-        holdings = client.apply_current_prices(holdings)
+        holdings = client.enrich_holdings(holdings)
         cash_item = next(
             (item for item in holdings if item["currency"] in CASH_CURRENCIES), None
         )

@@ -87,7 +87,7 @@ class UpbitClient(BaseExchangeClient):
             "GET", "/v1/ticker", params={"markets": joined}, auth=False
         )
 
-    def apply_current_prices(self, holdings: list[dict]):
+    def enrich_holdings(self, holdings: list[dict]):
         markets = [
             f"KRW-{item['currency']}" for item in holdings if item["currency"] != "KRW"
         ]
