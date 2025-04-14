@@ -41,3 +41,50 @@ class BithumbClient(BaseExchangeClient):
 
     def get_holdings(self):
         return self._request("GET", "/v1/accounts")
+
+    def get_price(self, markets: list[str]):
+        """
+        지정한 마켓의 현재 시세를 조회합니다.
+
+        Args:
+            markets (list[str]): 마켓 코드 리스트 (예: ["KRW-BTC", "KRW-ETH"])
+
+        Returns:
+            list[dict]: 각 마켓의 현재 시세 정보
+        """
+        if not markets:
+            return []
+
+        joined = ",".join(markets)
+        return self._request(
+            "GET", "/v1/ticker", params={"markets": joined}, auth=False
+        )
+
+    def apply_current_prices(self, holdings: list[dict]):
+        markets = [
+            f"KRW-{item['currency']}" for item in holdings if item["currency"] != "KRW"
+        ]
+
+        prices_data = self.get_price(markets)
+
+        if isinstance(prices_data, dict) and prices_data.get("error"):
+            # 에러일 경우 그대로 반환 (원본 holdings 유지)
+            return prices_data
+
+        # "BTC": 80000000.0 형식으로 변환
+        prices = {
+            item["market"].split("-")[1]: item["trade_price"] for item in prices_data
+        }
+
+        for item in holdings:
+            currency = item["currency"]
+            if currency == "KRW":
+                item["current_price"] = 1.0
+                item["valuation"] = float(item["balance"])
+                continue
+
+            price = prices.get(currency, 0)
+            item["current_price"] = price
+            item["valuation"] = float(item["balance"]) * price
+
+        return holdings

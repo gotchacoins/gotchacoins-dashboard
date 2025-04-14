@@ -1,8 +1,10 @@
 from django.utils.translation import get_language
 
+
 from exchanges.models import UserExchangeKey, Market
-from exchanges.clients import EXCHANGE_CLIENTS
 from exchanges.errors.codes import ExchangeErrorCode
+from exchanges.clients import EXCHANGE_CLIENTS
+from exchanges.constants import CASH_CURRENCIES
 
 
 def get_portfolio_coins_context(
@@ -37,7 +39,10 @@ def get_portfolio_coins_context(
             }
 
         holdings = client.apply_current_prices(holdings)
-        holdings = [item for item in holdings if item["currency"] != "KRW"]
+        cash_item = next(
+            (item for item in holdings if item["currency"] in CASH_CURRENCIES), None
+        )
+        cash_balance = float(cash_item["balance"]) if cash_item else 0.0
 
         language_code = get_language()
         markets = Market.objects.filter(exchange__id=exchange_id)
@@ -67,17 +72,23 @@ def get_portfolio_coins_context(
                 round(item_profit_rate, 2) if item_profit_rate is not None else None
             )
 
+        # 원화, 달러 코인 목록에서 제거
+        filtered_holdings = [
+            item for item in holdings if item["currency"] not in CASH_CURRENCIES
+        ]
+
         # 페이지네이션 처리
         total = len(holdings)
         start = (page - 1) * limit
         end = start + limit
-        paginated = holdings[start:end]
+        paginated = filtered_holdings[start:end]
 
         return {
             "holdings": paginated,
             "page": page,
             "limit": limit,
             "total": total,
+            "cash_balance": cash_balance,
         }
 
     except UserExchangeKey.DoesNotExist:
@@ -101,7 +112,7 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
 
     if "error" in coins_context:
         return {
-            "krw_balance": 0,
+            "cash_balance": 0,
             "total_valuation": 0,
             "total_buy_price": 0,
             "profit": 0,
@@ -110,7 +121,7 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
             "error": coins_context["error"],
         }
 
-    krw_balance = 0  # 이미 KRW 제거된 상태
+    cash_balance = coins_context.get("cash_balance", 0.0)
     total_valuation = sum(item["valuation"] for item in holdings)
     total_buy_price = sum(
         float(item["balance"]) * float(item["avg_buy_price"]) for item in holdings
@@ -119,10 +130,10 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
     profit_rate = (
         round((profit / total_buy_price) * 100, 2) if total_buy_price else None
     )
-    total_asset = krw_balance + total_valuation
+    total_asset = cash_balance + total_valuation
 
     return {
-        "krw_balance": krw_balance,  # 보유 현금
+        "cash_balance": cash_balance,  # 보유 현금
         "total_valuation": total_valuation,  # 총 평가금액
         "total_buy_price": total_buy_price,  # 총 매수금액
         "profit": profit,  # 총 수익
