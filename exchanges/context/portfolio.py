@@ -14,7 +14,7 @@ def get_portfolio_coins_context(
             return {
                 "error": {
                     "code": ExchangeErrorCode.NOT_SUPPORTED_EXCHANGE,
-                    "message": f"[{exchange_id}] 지원되지 않는 거래소입니다.",
+                    "message": f"🚫 [{exchange_id}] 지원되지 않는 거래소입니다.",
                 },
                 "holdings": [],
                 "page": page,
@@ -84,7 +84,9 @@ def get_portfolio_coins_context(
         return {
             "error": {
                 "code": ExchangeErrorCode.KEY_MISSING,
-                "message": f"{exchange_id.upper()} API 키가 등록되어 있지 않습니다.",
+                "message": f"🚫 {exchange_id.upper()} API 키가 등록되어 있지 않습니다.",
+                "action_label": "거래소 연동하기",
+                "action_url": "/dashboard/exchange-settings/",
             },
             "holdings": [],
             "page": page,

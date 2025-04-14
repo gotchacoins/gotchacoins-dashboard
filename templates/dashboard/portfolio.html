@@ -12,7 +12,10 @@
   <!--요약-->
   {% if error %}
     <div class="alert alert-warning">
-      🚫 {{ error.message }}
+      {{ error.message }}
+      {% if error.action_url %}
+        <a href="{{ error.action_url }}" class="btn btn-sm btn-primary">{{ error.action_label }}</a>
+      {% endif %}
     </div>
   {% endif %}
   <div class="tabs mt-4">

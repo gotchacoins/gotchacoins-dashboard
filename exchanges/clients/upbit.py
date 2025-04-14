@@ -1,7 +1,6 @@
 import jwt
 import uuid
 import hashlib
-import httpx
 from urllib.parse import urlencode
 
 from exchanges.clients.base import BaseExchangeClient
@@ -11,10 +10,6 @@ from exchanges.errors.messages import UPBIT_ERROR_CODE_MESSAGES
 class UpbitClient(BaseExchangeClient):
 
     BASE_URL = "https://api.upbit.com"
-
-    def __init__(self, access_key: str = "", secret_key: str = ""):
-        self.access_key = access_key
-        self.secret_key = secret_key
 
     def _generate_headers(self, query: dict = None, use_auth: bool = True) -> dict:
 
@@ -36,30 +31,7 @@ class UpbitClient(BaseExchangeClient):
         jwt_token = jwt.encode(payload, self.secret_key, algorithm="HS256")
         return {"Authorization": f"Bearer {jwt_token}"}
 
-    def _request(
-        self, method: str, path: str, params: dict = None, auth: bool = True
-    ) -> dict:
-        url = f"{self.BASE_URL}{path}"
-        headers = self._generate_headers(params, use_auth=auth)
-
-        try:
-            with httpx.Client() as client:
-                response = client.request(
-                    method, url, headers=headers, params=params, timeout=10
-                )
-            response.raise_for_status()
-            return response.json()
-
-        except httpx.HTTPStatusError as e:
-            return self._handle_http_error(e)
-
-        except httpx.RequestError as e:
-            return self._error("REQUEST_ERROR", f"요청 실패: {str(e)}")
-
-        except Exception as e:
-            return self._error("EXCEPTION", f"알 수 없는 예외: {str(e)}")
-
-    def _handle_http_error(self, e: httpx.HTTPStatusError) -> dict:
+    def _handle_http_error(self, e) -> dict:
         try:
             error_json = e.response.json()
             upbit_error = (
