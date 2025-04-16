@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import DashboardView, PortfolioView
-from .partial_views.portfolio import portfolio_coins_partial, portfolio_summary_partial
+from dashboard.views import DashboardView, PortfolioView
+from dashboard.partials.portfolio import (
+    portfolio_coins_partial,
+    portfolio_summary_partial,
+)
 
 app_name = "dashboard"
 urlpatterns = [
