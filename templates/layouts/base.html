@@ -18,9 +18,13 @@
 
     <!--토스트 메시지-->
     {% if messages %}
-    {% for message in messages %}
-      {% if forloop.last %}
-          <div class="toast">
+      {% for message in messages %}
+        {% if forloop.last %}
+          <div 
+            x-data 
+            x-init="setTimeout(() => $el.remove(), 1000)"
+            class="toast fixed top-4 right-4 z-50"
+          >
             <div class="alert alert-success">
               <span>{{ message }}</span>
             </div>

@@ -1,8 +1,9 @@
 from django.utils.translation import get_language
 
-
-from exchanges.models import UserExchangeKey, Market
+from exchanges.clients.base import BaseExchangeClient
 from exchanges.errors.codes import ExchangeErrorCode
+from exchanges.models import UserExchangeKey, Market
+
 from exchanges.clients import EXCHANGE_CLIENTS
 from exchanges.constants import CASH_CURRENCIES
 
@@ -24,7 +25,9 @@ def get_portfolio_coins_context(
                 "total": 0,
             }
 
-        client = EXCHANGE_CLIENTS[exchange_id](key.access_key, key.secret_key)
+        client: BaseExchangeClient = EXCHANGE_CLIENTS[exchange_id](
+            key.access_key, key.secret_key
+        )
         holdings = client.get_holdings()
         if isinstance(holdings, dict) and holdings.get("error"):
             error = {
