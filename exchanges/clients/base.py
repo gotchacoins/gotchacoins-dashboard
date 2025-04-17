@@ -30,12 +30,18 @@ class BaseExchangeClient(ABC):
         except Exception as e:
             return self._error("EXCEPTION", f"알 수 없는 예외: {str(e)}")
 
-    def _error(self, code: str, message: str) -> dict:
-        return {
+    def _error(
+        self, code: str, message: str, action_label: str = None, action_url: str = None
+    ) -> dict:
+        error_dict = {
             "error": True,
             "code": code,
             "message": message,
         }
+        if action_label and action_url:
+            error_dict["action_label"] = action_label
+            error_dict["action_url"] = action_url
+        return error_dict
 
     @abstractmethod
     def _generate_headers(self, query: dict = None, use_auth: bool = True) -> dict:

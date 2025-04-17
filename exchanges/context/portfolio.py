@@ -27,11 +27,18 @@ def get_portfolio_coins_context(
         client = EXCHANGE_CLIENTS[exchange_id](key.access_key, key.secret_key)
         holdings = client.get_holdings()
         if isinstance(holdings, dict) and holdings.get("error"):
+            error = {
+                "code": holdings.get("code", ExchangeErrorCode.EXTERNAL_API_ERROR),
+                "message": holdings.get("message", "외부 API 호출 오류입니다."),
+            }
+
+            # 버튼이 포함되어 있다면 같이 전달
+            if holdings.get("action_label") and holdings.get("action_url"):
+                error["action_label"] = holdings["action_label"]
+                error["action_url"] = holdings["action_url"]
+
             return {
-                "error": {
-                    "code": ExchangeErrorCode.EXTERNAL_API_ERROR,
-                    "message": holdings["message"],
-                },
+                "error": error,
                 "holdings": [],
                 "page": page,
                 "limit": limit,

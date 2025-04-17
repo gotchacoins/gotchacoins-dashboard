@@ -41,6 +41,16 @@ class UpbitClient(BaseExchangeClient):
             message = UPBIT_ERROR_CODE_MESSAGES.get(
                 error_code, upbit_error.get("message", "알 수 없는 오류입니다.")
             )
+
+            # 특정 오류코드에 가이드 버튼 표시
+            if error_code in UPBIT_ERROR_CODE_MESSAGES.keys():
+                return self._error(
+                    error_code,
+                    message,
+                    action_label="가이드 보러가기",
+                    action_url="/dashboard/guide/exchange-integration/",
+                )
+
             return self._error(error_code, message)
 
         except Exception:
