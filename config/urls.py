@@ -30,6 +30,7 @@ urlpatterns += i18n_patterns(
     path("accounts/", include("allauth.urls")),
     path("dashboard/", include("dashboard.urls")),
     # path("exchanges/", include("exchanges.urls")),
+    path("market/", include("market.urls")),
     path("", include("pages.urls")),
     prefix_default_language=False,
 )
