@@ -1,8 +1,8 @@
 from django.urls import path
 from dashboard.views import DashboardView, PortfolioView
 from dashboard.partials.portfolio import (
-    portfolio_coins_partial,
-    portfolio_summary_partial,
+    CoinsPartialView,
+    SummaryPartialView,
 )
 
 app_name = "dashboard"
@@ -15,13 +15,13 @@ urlpatterns = [
 
 partial_urlpatterns = [
     path(
-        "portfolio/<str:exchange_id>/items/",
-        portfolio_coins_partial,
+        "portfolio/<str:exchange_id>/coins/",
+        CoinsPartialView.as_view(),
         name="portfolio-coins-partial",
     ),
     path(
         "portfolio/<str:exchange_id>/summary/",
-        portfolio_summary_partial,
+        SummaryPartialView.as_view(),
         name="portfolio-summary-partial",
     ),
 ]

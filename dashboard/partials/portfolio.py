@@ -1,28 +1,50 @@
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
+from rest_framework.response import Response
 
 from exchanges.context.portfolio import (
-    get_portfolio_summary_context,
     get_portfolio_coins_context,
+    get_portfolio_summary_context,
 )
 
-
-@login_required
-def portfolio_coins_partial(request, exchange_id):
-    context = get_portfolio_coins_context(request.user, exchange_id)
-
-    html = render_to_string(
-        "dashboard/partials/_portfolio_coins.html",
-        {"holdings": context["holdings"]},  # 필요한 필드만 전달 가능
-    )
-    return HttpResponse(html)
+from common.utils.cache import get_or_set_cache
 
 
-@login_required
-def portfolio_summary_partial(request, exchange_id):
-    context = get_portfolio_summary_context(request.user, exchange_id)
-    html = render_to_string(
-        "dashboard/partials/_portfolio_summary.html", context, request=request
-    )
-    return HttpResponse(html)
+class CoinsPartialView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    template_name = "dashboard/partials/_portfolio_coins.html"
+
+    def get(self, request, exchange_id):
+
+        page = int(request.GET.get("page", 1))
+        limit = int(request.GET.get("limit", 20))
+
+        context = get_or_set_cache(
+            key=f"portfolio:{request.user.id}:{exchange_id}:coins",
+            ttl=3,
+            compute_fn=lambda: get_portfolio_coins_context(
+                request.user, exchange_id, page, limit
+            ),
+        )
+
+        return Response(context)
+
+
+class SummaryPartialView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    template_name = "dashboard/partials/_portfolio_summary.html"
+
+    def get(self, request, exchange_id):
+
+        context = get_or_set_cache(
+            key=f"portfolio:{request.user.id}:{exchange_id}:summary",
+            ttl=3,
+            compute_fn=lambda: get_portfolio_summary_context(request.user, exchange_id),
+        )
+
+        return Response(context)

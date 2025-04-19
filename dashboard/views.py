@@ -1,5 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
 
 from exchanges.context.portfolio import (
     get_portfolio_summary_context,
@@ -7,21 +9,32 @@ from exchanges.context.portfolio import (
 )
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer]
     template_name = "dashboard/index.html"
 
+    def get(self, request):
+        return Response({})
 
-class PortfolioView(LoginRequiredMixin, TemplateView):
+
+class PortfolioView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer]
     template_name = "dashboard/portfolio.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        exchange_id = self.kwargs.get("exchange_id")
-        page = int(self.request.GET.get("page", 1))
-        limit = int(self.request.GET.get("limit", 20))
+    def get(self, request, exchange_id):
 
-        context.update(get_portfolio_summary_context(self.request.user, exchange_id))
-        context.update(
-            get_portfolio_coins_context(self.request.user, exchange_id, page, limit)
+        page = int(request.GET.get("page", 1))
+        limit = int(request.GET.get("limit", 20))
+
+        coins_context = get_portfolio_coins_context(
+            request.user, exchange_id, page, limit
         )
-        return context
+        summary_context = get_portfolio_summary_context(request.user, exchange_id)
+
+        context = coins_context | summary_context
+
+        return Response(context)

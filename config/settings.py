@@ -56,6 +56,7 @@ THIRD_PARTY_APPS = [
     "widget_tweaks",
     "storages",
     "django_htmx",
+    "rest_framework",
 ]
 
 LOCAL_APPS = [
@@ -221,6 +222,18 @@ DEBUG_TOOLBAR_CONFIG = {
 
 
 AUTH_USER_MODEL = "accounts.User"
+
+# drf
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",  # Django 기본 세션 로그인 기반
+    ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",  # JSON 응답
+        "rest_framework.renderers.TemplateHTMLRenderer",  # HTML 템플릿 렌더링
+    ],
+}
+
 
 # django-allauth
 LOGIN_REDIRECT_URL = "dashboard:index"  # 로그인 후 리다이렉트 URL

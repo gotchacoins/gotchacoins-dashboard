@@ -19,6 +19,7 @@ def get_portfolio_coins_context(
                     "code": ExchangeErrorCode.NOT_SUPPORTED_EXCHANGE,
                     "message": f"🚫 [{exchange_id}] 지원되지 않는 거래소입니다.",
                 },
+                "exchange_id": exchange_id,
                 "holdings": [],
                 "page": page,
                 "limit": limit,
@@ -42,6 +43,7 @@ def get_portfolio_coins_context(
 
             return {
                 "error": error,
+                "exchange_id": exchange_id,
                 "holdings": [],
                 "page": page,
                 "limit": limit,
@@ -88,12 +90,13 @@ def get_portfolio_coins_context(
         ]
 
         # 페이지네이션 처리
-        total = len(holdings)
+        total = len(filtered_holdings)
         start = (page - 1) * limit
         end = start + limit
         paginated = filtered_holdings[start:end]
 
         return {
+            "exchange_id": exchange_id,
             "holdings": paginated,
             "page": page,
             "limit": limit,
@@ -110,6 +113,7 @@ def get_portfolio_coins_context(
                 "action_url": "/dashboard/exchange-settings/",
             },
             "holdings": [],
+            "exchange_id": exchange_id,
             "page": page,
             "limit": limit,
             "total": 0,
@@ -143,6 +147,7 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
     total_asset = cash_balance + total_valuation
 
     return {
+        "exchange_id": exchange_id,
         "cash_balance": cash_balance,  # 보유 현금
         "total_valuation": total_valuation,  # 총 평가금액
         "total_buy_price": total_buy_price,  # 총 매수금액
