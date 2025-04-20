@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.response import Response
 
-from exchanges.context.portfolio import (
+from dashboard.contexts.overview import get_dashboard_summary_context
+
+from dashboard.contexts.portfolio import (
     get_portfolio_summary_context,
     get_portfolio_coins_context,
 )
@@ -12,8 +14,20 @@ from exchanges.context.portfolio import (
 class DashboardView(APIView):
 
     permission_classes = [IsAuthenticated]
-    renderer_classes = [TemplateHTMLRenderer]
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
     template_name = "dashboard/index.html"
+
+    def get(self, request):
+
+        context = get_dashboard_summary_context(request.user)
+        return Response(context)
+
+
+class InsightView(APIView):
+
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "dashboard/insight.html"
 
     def get(self, request):
         return Response({})

@@ -1,15 +1,18 @@
 from django.urls import path
-from dashboard.views import DashboardView, PortfolioView
+from dashboard.views import DashboardView, InsightView, PortfolioView
+
+from dashboard.partials.overview import DashboardSummaryPartialView
+
 from dashboard.partials.portfolio import (
-    CoinsPartialView,
-    SummaryPartialView,
+    PortfolioCoinsPartialView,
+    PortfolioSummaryPartialView,
 )
 
 app_name = "dashboard"
 urlpatterns = [
     # 📊 대시보드
     path("", DashboardView.as_view(), name="index"),  # 전체 요약
-    # path("insight/", InsightView.as_view(), name="insight"),  # 자산 분포 / 시장 지표
+    path("insight/", InsightView.as_view(), name="insight"),  # 자산 분포 / 시장 지표
     # 📈 포트폴리오
     path("portfolio/<str:exchange_id>/", PortfolioView.as_view(), name="portfolio"),
     # path("analysis/holdings/", HoldingsAnalysisView.as_view(), name="analysis-holdings"),  # 보유 코인 분석
@@ -21,13 +24,18 @@ urlpatterns = [
 
 partial_urlpatterns = [
     path(
+        "summary/",
+        DashboardSummaryPartialView.as_view(),
+        name="dashboard-summary-partial",
+    ),
+    path(
         "portfolio/<str:exchange_id>/coins/",
-        CoinsPartialView.as_view(),
+        PortfolioCoinsPartialView.as_view(),
         name="portfolio-coins-partial",
     ),
     path(
         "portfolio/<str:exchange_id>/summary/",
-        SummaryPartialView.as_view(),
+        PortfolioSummaryPartialView.as_view(),
         name="portfolio-summary-partial",
     ),
 ]

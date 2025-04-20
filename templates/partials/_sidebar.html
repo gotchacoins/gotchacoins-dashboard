@@ -17,11 +17,11 @@
             <div id="sidebar-menu">
                 <!--대시보드 start-->
                 <p class="sidebar-menu-title">대시보드</p>
-                <a class="sidebar-menu-item" href="./apps-file-manager.html">
+                <a class="sidebar-menu-item" href="{% url 'dashboard:index' %}">
                   <span class="iconify lucide--layout-dashboard size-4"></span>
                   전체 요약
                 </a>
-                <a class="sidebar-menu-item" href="./apps-file-manager.html">
+                <a class="sidebar-menu-item" href="{% url 'dashboard:insight' %}">
                   <span class="iconify lucide--activity-square size-4"></span>
                   자산 분포 / 시장 지표
                 </a>

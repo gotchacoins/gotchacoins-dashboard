@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.response import Response
 
-from exchanges.context.portfolio import (
+from dashboard.contexts.portfolio import (
     get_portfolio_coins_context,
     get_portfolio_summary_context,
 )
@@ -11,7 +11,7 @@ from exchanges.context.portfolio import (
 from common.utils.cache import get_or_set_cache
 
 
-class CoinsPartialView(APIView):
+class PortfolioCoinsPartialView(APIView):
 
     permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
@@ -23,7 +23,7 @@ class CoinsPartialView(APIView):
         limit = int(request.GET.get("limit", 20))
 
         context = get_or_set_cache(
-            key=f"portfolio:{request.user.id}:{exchange_id}:coins",
+            key=f"portfolio:{request.user.id}:{exchange_id}:portfolio:coins",
             ttl=3,
             compute_fn=lambda: get_portfolio_coins_context(
                 request.user, exchange_id, page, limit
@@ -33,7 +33,7 @@ class CoinsPartialView(APIView):
         return Response(context)
 
 
-class SummaryPartialView(APIView):
+class PortfolioSummaryPartialView(APIView):
 
     permission_classes = [IsAuthenticated]
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
@@ -42,7 +42,7 @@ class SummaryPartialView(APIView):
     def get(self, request, exchange_id):
 
         context = get_or_set_cache(
-            key=f"portfolio:{request.user.id}:{exchange_id}:summary",
+            key=f"portfolio:{request.user.id}:{exchange_id}:portfolio:summary",
             ttl=3,
             compute_fn=lambda: get_portfolio_summary_context(request.user, exchange_id),
         )
