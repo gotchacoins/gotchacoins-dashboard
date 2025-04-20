@@ -7,15 +7,22 @@
 
 {% block dashboard_content %}
 <div id="layout-content">
-  <div class="flex items-center justify-between">
-      <h3 class="text-lg font-medium">Business Overview</h3>
-      <div class="breadcrumbs hidden p-0 text-sm sm:inline">
-          <ul>
-              <li><a href="./dashboards-ecommerce.html">Nexus</a></li>
-              <li>Dashboards</li>
-              <li class="opacity-80">Ecommerce</li>
-          </ul>
-      </div>
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-medium">📊 전체 요약</h3>
+    <div class="flex items-center gap-2">
+      <p id="last-updated-text" class="text-sm text-base-content/60">
+        마지막 갱신: 불러오는 중...
+      </p>
+      <button
+        hx-get="{% url 'dashboard:dashboard-summary-partial' %}"
+        hx-target="#dashboard-summary"
+        hx-swap="innerHTML"
+        class="btn btn-sm btn-accent gap-1 px-3"
+      >
+      <span class="iconify lucide--rotate-ccw size-4"></span>
+        자산 갱신
+      </button>
+    </div>
   </div>
   <div class="mt-6">
       <!--  Start: Dashboard Stats Widget -->
