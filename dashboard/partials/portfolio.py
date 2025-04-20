@@ -8,8 +8,6 @@ from dashboard.contexts.portfolio import (
     get_portfolio_summary_context,
 )
 
-from common.utils.cache import get_or_set_cache
-
 
 class PortfolioCoinsPartialView(APIView):
 
@@ -22,13 +20,7 @@ class PortfolioCoinsPartialView(APIView):
         page = int(request.GET.get("page", 1))
         limit = int(request.GET.get("limit", 20))
 
-        context = get_or_set_cache(
-            key=f"portfolio:{request.user.id}:{exchange_id}:portfolio:coins",
-            ttl=3,
-            compute_fn=lambda: get_portfolio_coins_context(
-                request.user, exchange_id, page, limit
-            ),
-        )
+        context = get_portfolio_coins_context(request.user, exchange_id, page, limit)
 
         return Response(context)
 
@@ -41,10 +33,6 @@ class PortfolioSummaryPartialView(APIView):
 
     def get(self, request, exchange_id):
 
-        context = get_or_set_cache(
-            key=f"portfolio:{request.user.id}:{exchange_id}:portfolio:summary",
-            ttl=3,
-            compute_fn=lambda: get_portfolio_summary_context(request.user, exchange_id),
-        )
+        context = get_portfolio_summary_context(request.user, exchange_id)
 
         return Response(context)

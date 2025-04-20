@@ -7,6 +7,8 @@ from exchanges.models import UserExchangeKey, Market
 from exchanges.clients import EXCHANGE_CLIENTS
 from exchanges.constants import CASH_CURRENCIES
 
+from django.utils.timezone import now, localtime
+
 
 def get_portfolio_coins_context(
     user, exchange_id: str, page: int = 1, limit: int = 20
@@ -89,6 +91,9 @@ def get_portfolio_coins_context(
             item for item in holdings if item["currency"] not in CASH_CURRENCIES
         ]
 
+        key.last_updated = now()
+        key.save(update_fields=["last_updated"])
+
         # 페이지네이션 처리
         total = len(filtered_holdings)
         start = (page - 1) * limit
@@ -102,6 +107,7 @@ def get_portfolio_coins_context(
             "limit": limit,
             "total": total,
             "cash_balance": cash_balance,
+            "last_updated": localtime(key.last_updated).strftime("%Y-%m-%d %H:%M:%S"),
         }
 
     except UserExchangeKey.DoesNotExist:
@@ -154,4 +160,5 @@ def get_portfolio_summary_context(user, exchange_id: str) -> dict:
         "profit": profit,  # 총 수익
         "profit_rate": profit_rate,  # 총 수익률
         "total_asset": total_asset,  # 총 자산 (보유현금 + 총 평가금액)
+        "last_updated": coins_context.get("last_updated"),
     }

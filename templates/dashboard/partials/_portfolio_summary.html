@@ -1,5 +1,11 @@
 {% load humanize %}
 {% load math_filters %}
+<template>
+<p id="last-updated-text" hx-swap-oob="true" class="text-sm text-base-content/60">
+  마지막 갱신: {{ last_updated }}
+</p>
+</template>
+
 <div class="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
   <div class="card bg-base-100 shadow">
     <div class="card-body gap-2">

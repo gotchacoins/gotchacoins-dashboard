@@ -61,6 +61,8 @@ class UserExchangeKey(models.Model):
     is_active = models.BooleanField(default=True)  # 사용 여부
     created_at = models.DateTimeField(auto_now_add=True)
 
+    last_updated = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
         return f"{self.user} - {self.exchange.id}"
 
