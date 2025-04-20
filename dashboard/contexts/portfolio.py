@@ -1,4 +1,5 @@
 from django.utils.translation import get_language
+from django.utils.timezone import now, localtime
 
 from exchanges.clients.base import BaseExchangeClient
 from exchanges.errors.codes import ExchangeErrorCode
@@ -6,8 +7,6 @@ from exchanges.models import UserExchangeKey, Market
 
 from exchanges.clients import EXCHANGE_CLIENTS
 from exchanges.constants import CASH_CURRENCIES
-
-from django.utils.timezone import now, localtime
 
 
 def get_portfolio_coins_context(

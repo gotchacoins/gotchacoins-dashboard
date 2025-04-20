@@ -1,8 +1,6 @@
 from exchanges.clients import EXCHANGE_CLIENTS
 from dashboard.contexts.portfolio import get_portfolio_summary_context
 
-from django.utils.timezone import localtime
-
 
 def get_dashboard_summary_context(user) -> dict:
     cash_total = 0.0
