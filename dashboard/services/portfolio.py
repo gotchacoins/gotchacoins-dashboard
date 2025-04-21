@@ -6,22 +6,24 @@ from dashboard.models import PortfolioSnapshot
 from dashboard.contexts.portfolio import get_portfolio_summary_context
 
 
-def save_portfolio_snapshot(user):
+def save_portfolio_snapshot(user, exchange_id: str = None):
     """
-    유저의 특정 거래소 포트폴리오 데이터를 스냅샷으로 저장합니다.
-    동일한 user + exchange + date 조합이 있을 경우 덮어씌웁니다.
+    유저의 포트폴리오 데이터를 스냅샷으로 저장합니다.
+    - exchange_id가 주어지면 해당 거래소만 저장
+    - 없으면 등록된 전체 거래소에 대해 저장
     """
     today = date.today()
-    for exchange_id in EXCHANGE_CLIENTS:
-        summary = get_portfolio_summary_context(user, exchange_id)
+    exchange_ids = [exchange_id] if exchange_id else EXCHANGE_CLIENTS.keys()
+
+    for ex_id in exchange_ids:
+        summary = get_portfolio_summary_context(user, ex_id)
 
         if "error" in summary:
             continue
 
-        # get_or_create → 이미 저장된 스냅샷 있으면 덮어쓰기 방지
         snapshot, created = PortfolioSnapshot.objects.get_or_create(
             user=user,
-            exchange_id=exchange_id,
+            exchange_id=ex_id,
             date=today,
             defaults={
                 "cash_balance": summary["cash_balance"],
@@ -33,7 +35,6 @@ def save_portfolio_snapshot(user):
         )
 
         if not created:
-            # 이미 있으면 업데이트
             snapshot.cash_balance = summary["cash_balance"]
             snapshot.total_valuation = summary["total_valuation"]
             snapshot.total_buy_price = summary["total_buy_price"]

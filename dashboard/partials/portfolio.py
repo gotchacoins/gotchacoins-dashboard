@@ -37,6 +37,6 @@ class PortfolioSummaryPartialView(APIView):
 
         context = get_portfolio_summary_context(request.user, exchange_id)
 
-        save_portfolio_snapshot(request.user)
+        save_portfolio_snapshot(request.user, exchange_id=exchange_id)
 
         return Response(context)

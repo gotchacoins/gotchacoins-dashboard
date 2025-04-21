@@ -17,6 +17,6 @@ class DashboardSummaryPartialView(APIView):
 
         context = get_dashboard_summary_context(request.user)
 
-        save_portfolio_snapshot(request.user)
+        save_portfolio_snapshot(request.user, exchange_id=None)
 
         return Response(context)
