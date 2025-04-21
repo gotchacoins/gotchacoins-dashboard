@@ -4,6 +4,7 @@ from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.response import Response
 
 from dashboard.contexts.overview import get_dashboard_summary_context
+from dashboard.services.portfolio import save_portfolio_snapshot
 
 
 class DashboardSummaryPartialView(APIView):
@@ -15,5 +16,7 @@ class DashboardSummaryPartialView(APIView):
     def get(self, request):
 
         context = get_dashboard_summary_context(request.user)
+
+        save_portfolio_snapshot(request.user)
 
         return Response(context)

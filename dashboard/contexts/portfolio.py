@@ -13,7 +13,6 @@ def get_portfolio_coins_context(
     user, exchange_id: str, page: int = 1, limit: int = 20
 ) -> dict:
     try:
-        key = UserExchangeKey.objects.get(user=user, exchange__id=exchange_id)
         if exchange_id not in EXCHANGE_CLIENTS:
             return {
                 "error": {
@@ -26,6 +25,8 @@ def get_portfolio_coins_context(
                 "limit": limit,
                 "total": 0,
             }
+
+        key = UserExchangeKey.objects.get(user=user, exchange__id=exchange_id)
 
         client: BaseExchangeClient = EXCHANGE_CLIENTS[exchange_id](
             key.access_key, key.secret_key

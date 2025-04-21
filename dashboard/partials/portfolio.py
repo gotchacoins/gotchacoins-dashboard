@@ -8,6 +8,8 @@ from dashboard.contexts.portfolio import (
     get_portfolio_summary_context,
 )
 
+from dashboard.services.portfolio import save_portfolio_snapshot
+
 
 class PortfolioCoinsPartialView(APIView):
 
@@ -34,5 +36,7 @@ class PortfolioSummaryPartialView(APIView):
     def get(self, request, exchange_id):
 
         context = get_portfolio_summary_context(request.user, exchange_id)
+
+        save_portfolio_snapshot(request.user)
 
         return Response(context)
