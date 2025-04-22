@@ -12,7 +12,14 @@ def get_dashboard_summary_context(user) -> dict:
         summary = get_portfolio_summary_context(user, exchange_id)
 
         if "error" in summary:
-            continue
+            return {
+                "cash_balance": 0,
+                "total_valuation": 0,
+                "total_buy_price": 0,
+                "profit": 0,
+                "profit_rate": 0,
+                "total_asset": 0,
+            }
 
         # 누적 데이터 집계
         cash_total += summary.get("cash_balance", 0.0)
